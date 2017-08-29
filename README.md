@@ -6,21 +6,21 @@ Helper functions for manipulating arrays.
 methods can be used on both `array` and `\ArrayAccess` objects. See the PHPDocs
 inside the classes for more information.
 
-## DotArr
-`DotArr` is an implementation of `\ArrayAccess` that uses the functions
-from `\MadeSimple\ArrDots`. Instances of `DotArr` can be passed into `ArrDots`
+## Dots
+`Dots` is an implementation of `\ArrayAccess` that uses the functions
+from `\MadeSimple\ArrDots`. Instances of `Dots` can be passed into `ArrDots`
 as if it were an `array`.
 
-There are three ways to create a `DotArr`:
+There are three ways to create a `Dots`:
 ```php
 // Create an empty dot array
-$dot = new \MadeSimple\DotArr();
+$dot = new \MadeSimple\Dots();
 
 // Create a dot array with a pre-existing array
-$dot = new \MadeSimple\DotArr($array);
+$dot = new \MadeSimple\Dots($array);
 
 // Create a dot array with 
-$dot = new \MadeSimple\DotArr([
+$dot = new \MadeSimple\Dots([
     'address' => [
         'houseNo'  => '123',
         'street'   => 'Fake St',
@@ -34,7 +34,7 @@ $dot = new \MadeSimple\DotArr([
 ]);
 ```
 
-Once a `DotArr` is created you can replace the underlining array
+Once a `Dots` is created you can replace the underlining array
 in the following ways:
 ```php
 // Set an array after dot array
@@ -46,7 +46,7 @@ $dot->setArray($array);
 $dot->setReference($array);
 ```
 
-Basic usage of `DotArr`:
+Basic usage of `Dots`:
 ```php
 // Get a value using dot notation:
 echo "Post Code: ", $dot['address.postCode'], PHP_EOL;
