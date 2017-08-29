@@ -14,13 +14,13 @@ as if it were an `array`.
 There are three ways to create a `Dots`:
 ```php
 // Create an empty dot array
-$dot = new \MadeSimple\Dots();
+$dots = new \MadeSimple\Dots();
 
 // Create a dot array with a pre-existing array
-$dot = new \MadeSimple\Dots($array);
+$dots = new \MadeSimple\Dots($array);
 
 // Create a dot array with 
-$dot = new \MadeSimple\Dots([
+$dots = new \MadeSimple\Dots([
     'address' => [
         'houseNo'  => '123',
         'street'   => 'Fake St',
@@ -39,30 +39,30 @@ in the following ways:
 ```php
 // Set an array after dot array
 // Changes will _not_ be reflected in the original array
-$dot->setArray($array);
+$dots->setArray($array);
 
 // Set an array as a reference
 // Changes will be reflected in the original array
-$dot->setReference($array);
+$dots->setReference($array);
 ```
 
 Basic usage of `Dots`:
 ```php
 // Get a value using dot notation:
-echo "Post Code: ", $dot['address.postCode'], PHP_EOL;
+echo "Post Code: ", $dots['address.postCode'], PHP_EOL;
 
 // Set a value using dot notation:
-$dot['address.postCode'] = 'EF45 6GH';
-echo "Post Code: ", $dot['address.postCode'], PHP_EOL;
+$dots['address.postCode'] = 'EF45 6GH';
+echo "Post Code: ", $dots['address.postCode'], PHP_EOL;
 
 // Remove a value using dot notation:
-unset($dot['address.postCode']);
-echo "Exists: ", (isset($dot['address.postCode']) ? 'yes' : 'no'), PHP_EOL;
+unset($dots['address.postCode']);
+echo "Exists: ", (isset($dots['address.postCode']) ? 'yes' : 'no'), PHP_EOL;
 
 // Add a value using dot notation:
-$dot['address.postCode'] = 'IJ78 9KL';
-echo "Post Code: ", $dot['address.postCode'], PHP_EOL;
+$dots['address.postCode'] = 'IJ78 9KL';
+echo "Post Code: ", $dots['address.postCode'], PHP_EOL;
 
 // Access nth element in an sub array
-echo "Comment: ", $dot['comments.1'], PHP_EOL;
+echo "Comment: ", $dots['comments.1'], PHP_EOL;
 ```
