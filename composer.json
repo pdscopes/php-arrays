@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "MadeSimple\\TaskWorker\\Test\\": "tests/"
+            "MadeSimple\\Arrays\\Test\\": "tests/"
         }
     }
 }

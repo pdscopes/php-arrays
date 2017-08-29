@@ -1,6 +1,6 @@
 <?php
 
-namespace MadeSimple\TaskWorker\Test\Unit;
+namespace MadeSimple\Arrays\Test\Unit;
 
 use MadeSimple\Arrays\Dots;
 use PHPUnit\Framework\TestCase;
