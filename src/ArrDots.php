@@ -129,6 +129,52 @@ class ArrDots
     }
 
     /**
+     * Get all items from a multi-dimensional associative array using "dots" notation.
+     *
+     * @param ArrayAccess|array  $array
+     * @param string             $key
+     * @param null|string        $wildcard
+     *
+     * @return array|mixed[]
+     */
+    public static function search($array, $key, $wildcard = null)
+    {
+        // If no wildcard set or the wildcard is not in the key
+        if (null === $wildcard || strpos($key, $wildcard) === false) {
+            return static::has($array, $key) ? [$key => static::get($array, $key)] : [];
+        }
+
+        $pattern  = '';
+        $segments = explode('.', $key);
+        while (($segment = array_shift($segments)) !== null) {
+            // If we have run out of arrays to look into, stop looking
+            if (!Arr::accessible($array)) {
+                return [];
+            }
+
+            // If this segment is a wildcard
+            if ($segment === $wildcard) {
+                $values = [];
+                $subKey = implode('.', $segments);
+                foreach (array_keys($array) as $attr) {
+                    foreach (static::search($array, $attr.'.'.$subKey, $wildcard) as $attrKey => $value) {
+                        $values[$pattern . $attrKey] = $value;
+                    }
+                }
+
+                return $values;
+            }
+            if (Arr::exists($array, $segment)) {
+                $array = $array[$segment];
+            }
+
+            $pattern .= $segment . '.';
+        }
+
+        return [$key => $array];
+    }
+
+    /**
      * Determine if an item or items exist in an multi-dimensional associative array using "dots" notation.
      *
      * @param ArrayAccess|array $array

@@ -87,6 +87,42 @@ class ArrDotsTest extends TestCase
         $this->assertEquals('Not There', ArrDots::get($array, 'foobar', 'Not There'));
     }
 
+    public function testSearch()
+    {
+        $data = [
+            'field0' => 'field0-value',
+            'array0' => [1, 2, 3, 4],
+            'array1' => [
+                ['item0' => 'item0-value'],
+                ['item0' => 'item1-value'],
+            ],
+            'array2' => [
+                ['sub-array0' => [1, 2, 3, 4]],
+                ['sub-array0' => [1, 2, 3, 4]],
+            ],
+            'array3' => [
+                ['sub-array1' => [['item1' => 'item2-value'], ['item1' => 'item3-value']]],
+                ['sub-array1' => [['item1' => 'item4-value']]],
+            ]
+        ];
+
+        $this->assertEquals([
+            'field0' => 'field0-value'
+        ], ArrDots::search($data, 'field0'));
+        $this->assertEquals([
+            'array0' => [1, 2, 3, 4]
+        ], ArrDots::search($data, 'array0'));
+        $this->assertEquals([
+            'array2.0.sub-array0' => [1, 2, 3, 4],
+            'array2.1.sub-array0' => [1, 2, 3, 4],
+        ], ArrDots::search($data, 'array2.*.sub-array0', '*'));
+        $this->assertEquals([
+            'array3.0.sub-array1.0.item1' => 'item2-value',
+            'array3.0.sub-array1.1.item1' => 'item3-value',
+            'array3.1.sub-array1.0.item1' => 'item4-value',
+        ], ArrDots::search($data, 'array3.*.sub-array1.*.item1', '*'));
+    }
+
     public function testHas()
     {
         $array = [
