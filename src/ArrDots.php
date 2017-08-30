@@ -155,9 +155,9 @@ class ArrDots
             // If this segment is a wildcard
             if ($segment === $wildcard) {
                 $values = [];
-                $subKey = implode('.', $segments);
                 foreach (array_keys($array) as $attr) {
-                    foreach (static::search($array, $attr.'.'.$subKey, $wildcard) as $attrKey => $value) {
+                    $subKey = implode('.', array_merge([$attr], $segments));
+                    foreach (static::search($array, $subKey, $wildcard) as $attrKey => $value) {
                         $values[$pattern . $attrKey] = $value;
                     }
                 }

@@ -103,7 +103,7 @@ class ArrDotsTest extends TestCase
             'array3' => [
                 ['sub-array1' => [['item1' => 'item2-value'], ['item1' => 'item3-value']]],
                 ['sub-array1' => [['item1' => 'item4-value']]],
-            ]
+            ],
         ];
 
         $this->assertEquals([
@@ -112,6 +112,12 @@ class ArrDotsTest extends TestCase
         $this->assertEquals([
             'array0' => [1, 2, 3, 4]
         ], ArrDots::search($data, 'array0'));
+        $this->assertEquals([
+            'array0.0' => 1,
+            'array0.1' => 2,
+            'array0.2' => 3,
+            'array0.3' => 4,
+        ], ArrDots::search($data, 'array0.*', '*'));
         $this->assertEquals([
             'array2.0.sub-array0' => [1, 2, 3, 4],
             'array2.1.sub-array0' => [1, 2, 3, 4],
