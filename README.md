@@ -1,4 +1,6 @@
 # madesimple/php-arrays
+[![Build Status](https://travis-ci.org/pdscopes/php-arrays.svg?branch=master)](https://travis-ci.org/pdscopes/php-arrays)
+
 Helper functions for manipulating arrays.
 
 ## Arr &amp; ArrDots
