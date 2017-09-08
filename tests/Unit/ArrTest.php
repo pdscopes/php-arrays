@@ -81,6 +81,51 @@ class ArrTest extends TestCase
         $this->assertEquals($partialArray, Arr::only($completeArray, ['two', 'deep']));
     }
 
+    public function testExcept()
+    {
+        $completeArray = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+        $partialArray = [
+            'two' => 'value 2',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals($partialArray, Arr::except($completeArray, ['one', 'three']));
+    }
+
+    public function testFilter()
+    {
+        $completeArray = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+        $partialArray = [
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals($partialArray, Arr::filter($completeArray, function ($item, $key) {
+            return in_array($key, ['two', 'deep']) && is_array($item);
+        }));
+    }
+
     public function testExists()
     {
         $array = [

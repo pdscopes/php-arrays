@@ -42,7 +42,7 @@ class Arr
      *
      * @param array $array
      *
-     * @return array
+     * @return array [array, array]
      */
     public static function divide($array)
     {
@@ -71,16 +71,42 @@ class Arr
     }
 
     /**
-     * Get a subset of the items from $array.
+     * Get a subset of the items from $array that only contains $keys.
      *
-     * @param array           $array
-     * @param string|string[] $keys
+     * @param array            $array
+     * @param int|string|array $keys
      *
      * @return array
      */
     public static function only($array, $keys)
     {
         return array_intersect_key($array, array_flip((array) $keys));
+    }
+
+    /**
+     * Get a subset of the items from $array that contains all keys except $keys.
+     *
+     * @param array            $array
+     * @param int|string|array $keys
+     *
+     * @return array
+     */
+    public static function except($array, $keys)
+    {
+        return array_diff_key($array, array_flip((array) $keys));
+    }
+
+    /**
+     * Get a subset of items from $array that pass $callback test.
+     *
+     * @param ArrayAccess|array $array
+     * @param callable          $callback
+     *
+     * @return array
+     */
+    public static function filter($array, callable $callback)
+    {
+        return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
