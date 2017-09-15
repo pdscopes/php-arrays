@@ -15,6 +15,15 @@ class CollectionTest extends TestCase
         $this->assertEquals($items, $collection->all());
     }
 
+    public function testSlice()
+    {
+        $items = [1, 2, 3, 4];
+        $slice = array_slice($items, 1, 2);
+        $collection = new Collection($items);
+
+        $this->assertEquals($slice, $collection->slice(1, 2));
+    }
+
     public function testFirst()
     {
         $items = [2,4,6,8];
@@ -153,6 +162,20 @@ class CollectionTest extends TestCase
 
         $this->assertEquals($completeArray, $collection->all());
         $this->assertEquals($partialArray, $filtered->all());
+    }
+
+    public function testFind()
+    {
+        $items = [
+            ['id' => 1, 'value' => 'alpha'],
+            ['id' => 2, 'value' => 'beta'],
+            ['id' => 3, 'value' => 'gamma'],
+        ];
+        $collection = new Collection($items);
+
+        $this->assertEquals(['id' => 2, 'value' => 'beta'], $collection->find(function ($item) {
+            return $item['id'] == 2;
+        }));
     }
 
     public function testMap()
@@ -311,15 +334,6 @@ class CollectionTest extends TestCase
         $collection = new Collection($items);
 
         $this->assertEquals($items, $collection->jsonSerialize());
-    }
-
-    public function testToJson()
-    {
-        $json       = '[1,2,3,4]';
-        $items      = [1,2,3,4];
-        $collection = new Collection($items);
-
-        $this->assertEquals($json, $collection->toJson());
     }
 
     public function testToString()

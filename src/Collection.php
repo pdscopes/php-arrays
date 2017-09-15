@@ -57,6 +57,20 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
+     * Return a slice of the underlining array.
+     *
+     * @param int  $offset
+     * @param int  $length
+     * @param bool $preserveKeys
+     *
+     * @return array
+     */
+    public function slice($offset, $length, $preserveKeys = false)
+    {
+        return array_slice($this->items, $offset, $length, $preserveKeys);
+    }
+
+    /**
      * Get the first item in the collection.
      * @return mixed
      */
@@ -79,12 +93,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
             throw new \InvalidArgumentException('Invalid Position');
         }
 
-        $item = reset($this->items);
-        while ($position-- > 0) {
-            $item = next($this->items);
-        }
-
-        return $item;
+        $slice = array_slice($this->items, $position, 1);
+        return empty($slice) ? null : reset($slice);
     }
 
     /**
@@ -161,6 +171,20 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
             return new static(Arr::filter($this->items, $callback));
         }
         return new static(array_filter($this->items));
+    }
+
+    /**
+     * Search the collection and return the first corresponding item if successful.
+     * If $needle is a callable then return the first item where the callable
+     * returns true.
+     *
+     * @param mixed|callable $needle
+     * @param bool           $strict
+     * @return mixed|null
+     */
+    public function find($needle, $strict = false)
+    {
+        return Arr::find($this->items, $needle, $strict);
     }
 
     /**
@@ -305,7 +329,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 
 
     /**
-     * @return array
+     * @InheritDoc
      */
     public function toArray()
     {
@@ -314,58 +338,65 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
         }, $this->items);
     }
     /**
-     * @return array
+     * @InheritDoc
      */
     public function jsonSerialize()
     {
         return array_map(function ($value) {
             if ($value instanceof JsonSerializable) {
                 return $value->jsonSerialize();
+            } else if ($value instanceof Arrayable) {
+                return $value->toArray();
             } else {
                 return $value;
             }
         }, $this->items);
     }
-
     /**
-     * @param int $options
-     * @param int $depth
-     * @return string
-     */
-    public function toJson($options = 0, $depth = 512)
-    {
-        return json_encode($this->jsonSerialize(), $options, $depth);
-    }
-
-    /**
-     * @return string
+     * @InheritDoc
      */
     public function __toString()
     {
-        return $this->toJson();
+        return json_encode($this->toArray());
     }
-
-
+    /**
+     * @InheritDoc
+     */
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->items);
     }
+    /**
+     * @InheritDoc
+     */
     public function offsetGet($offset)
     {
         return $this->items[$offset];
     }
+    /**
+     * @InheritDoc
+     */
     public function offsetSet($offset, $value)
     {
         $this->items[$offset] = $value;
     }
+    /**
+     * @InheritDoc
+     */
     public function offsetUnset($offset)
     {
         unset($this->items[$offset]);
     }
+    /**
+     * @InheritDoc
+     */
     public function count()
     {
         return count($this->items);
     }
+    /**
+     * @InheritDoc
+     */
     public function getIterator()
     {
         return new ArrayIterator($this->items);
