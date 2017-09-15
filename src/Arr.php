@@ -123,4 +123,57 @@ class Arr
 
         return array_key_exists($key, $array);
     }
+
+    /**
+     * Search the $haystack and return the first corresponding key if successful.
+     * If $needle is a callable then return the first key where the callable
+     * returns true.
+     *
+     * @param array           $haystack
+     * @param mixed|callable  $needle
+     * @param bool            $strict
+     * @return false|int|string
+     */
+    public static function findKey(array $haystack, $needle, $strict = false)
+    {
+        if (is_callable($needle)) {
+            foreach ($haystack as $key => $item) {
+                $result = $needle($item, $key);
+                if ((!$strict && $result == true) || ($strict && $result === true)) {
+                    return $key;
+                }
+            }
+            return false;
+        }
+        else {
+            return array_search($needle, $haystack, $strict);
+        }
+    }
+
+    /**
+     * Search the $haystack and return the first corresponding element if successful.
+     * If $needle is a callable then return the first element where the callable
+     * returns true.
+     *
+     * @param array           $haystack
+     * @param mixed|callable  $needle
+     * @param bool            $strict
+     * @return false|int|string
+     */
+    public static function find(array $haystack, $needle, $strict = false)
+    {
+        if (is_callable($needle)) {
+            foreach ($haystack as $key => $item) {
+                $result = $needle($item, $key);
+                if ((!$strict && $result == true) || ($strict && $result === true)) {
+                    return $item;
+                }
+            }
+            return null;
+        }
+        else {
+            $key = array_search($needle, $haystack, $strict);
+            return $key !== false ? $haystack[$key] : null;
+        }
+    }
 }

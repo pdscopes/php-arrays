@@ -145,4 +145,80 @@ class ArrTest extends TestCase
 
         $this->assertFalse(Arr::exists($array, 'four'));
     }
+
+    public function testFindKey()
+    {
+        $array = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals('one', Arr::findKey($array, 'value 1'));
+        $this->assertEquals('two', Arr::findKey($array, 'value 2'));
+        $this->assertEquals('three', Arr::findKey($array, 'value 3'));
+
+        $this->assertFalse(Arr::findKey($array, 'four'));
+    }
+
+    public function testFindKeyCallable()
+    {
+        $array = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals('one', Arr::findKey($array, function ($item) { return $item === 'value 1';}));
+        $this->assertEquals('two', Arr::findKey($array, function ($item) { return $item === 'value 2';}));
+        $this->assertEquals('three', Arr::findKey($array, function ($item) { return $item === 'value 3';}));
+
+        $this->assertFalse(Arr::findKey($array, function ($item) { return $item === 'blah';}));
+    }
+
+    public function testFind()
+    {
+        $array = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals('value 1', Arr::find($array, 'value 1'));
+        $this->assertEquals('value 2', Arr::find($array, 'value 2'));
+        $this->assertEquals('value 3', Arr::find($array, 'value 3'));
+
+        $this->assertNull(Arr::find($array, 'four'));
+    }
+
+    public function testFindCallable()
+    {
+        $array = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals('value 1', Arr::find($array, function ($item, $key) { return $key === 'one'; }));
+        $this->assertEquals('value 2', Arr::find($array, function ($item, $key) { return $key === 'two'; }));
+        $this->assertEquals('value 3', Arr::find($array, function ($item, $key) { return $key === 'three'; }));
+
+        $this->assertNull(Arr::find($array, function ($item, $key) { return $key === 'four'; }));
+    }
 }
