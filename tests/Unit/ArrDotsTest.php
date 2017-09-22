@@ -106,6 +106,9 @@ class ArrDotsTest extends TestCase
             ],
         ];
 
+        $this->assertEquals([], ArrDots::search($data, 'field1'));
+        $this->assertEquals([], ArrDots::search($data, 'field0.*'));
+        $this->assertEquals([], ArrDots::search($data, 'array1.item1'));
         $this->assertEquals([
             'field0' => 'field0-value'
         ], ArrDots::search($data, 'field0'));

@@ -166,6 +166,8 @@ class ArrDots
             }
             if (Arr::exists($array, $segment)) {
                 $array = $array[$segment];
+            } else {
+                return [];
             }
 
             $pattern .= $segment . '.';
