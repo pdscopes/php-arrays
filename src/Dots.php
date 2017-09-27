@@ -7,7 +7,7 @@ namespace MadeSimple\Arrays;
  *
  * @package MadeSimple\Arrays
  */
-class Dots implements \ArrayAccess
+class Dots implements \ArrayAccess, Arrayable
 {
     /**
      * @var array
@@ -34,6 +34,16 @@ class Dots implements \ArrayAccess
         if (Arr::accessible($array)) {
             $this->array = $array;
         }
+    }
+    
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->array;
     }
 
     /**

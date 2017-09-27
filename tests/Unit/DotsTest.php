@@ -7,6 +7,14 @@ use PHPUnit\Framework\TestCase;
 
 class DotsTest extends TestCase
 {
+    public function testToArray()
+    {
+        $array  = ['one' => 1, 'deep' => ['alpha' => 'a']];
+        $dotArr = new Dots($array);
+
+        $this->assertEquals($array, $dotArr->toArray());
+    }
+
     public function testExists()
     {
         $dotArr = new Dots(['one' => 1, 'deep' => ['alpha' => 'a']]);
