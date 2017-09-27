@@ -174,6 +174,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
+     * Get a subset of unique items from Collection.
+     *
+     * @param int $flag
+     * @return static
+     */
+    public function unique($flag = SORT_REGULAR)
+    {
+        return new static(Arr::unique($this->items, $flag));
+    }
+
+    /**
      * Search the collection and return the first corresponding item if successful.
      * If $needle is a callable then return the first item where the callable
      * returns true.

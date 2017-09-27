@@ -164,6 +164,25 @@ class CollectionTest extends TestCase
         $this->assertEquals($partialArray, $filtered->all());
     }
 
+    public function testUnique()
+    {
+        $completeArray = [
+            'one' => 'value a',
+            'two' => 'value b',
+            'three' => 'value a',
+            'four' => 'value b'
+        ];
+        $uniqueArray = [
+            'one' => 'value a',
+            'two' => 'value b',
+        ];
+        $collection = new Collection($completeArray);
+        $filtered   = $collection->unique();
+
+        $this->assertEquals($completeArray, $collection->all());
+        $this->assertEquals($uniqueArray, $filtered->all());
+    }
+
     public function testFind()
     {
         $items = [

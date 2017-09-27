@@ -126,6 +126,17 @@ class ArrTest extends TestCase
         }));
     }
 
+    public function unique()
+    {
+        $completeArray = [3,3, 5,5,5,5, 7,7,7,7,7,7, 9,9,9,9,9,9,9,9];
+        $filteredArray = [3, 5, 7, 9];
+
+        $this->assertEquals($filteredArray, Arr::unique($completeArray));
+
+        $completeDots = new Dots($completeArray);
+        $this->assertEquals($filteredArray, Arr::unique($completeDots));
+    }
+
     public function testExists()
     {
         $array = [

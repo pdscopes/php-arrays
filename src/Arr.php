@@ -110,6 +110,19 @@ class Arr
     }
 
     /**
+     * Get a subset of unique items from $array.
+     *
+     * @param ArrayAccess|array  $array
+     * @param int                $flag
+     *
+     * @return array
+     */
+    public static function unique($array, $flag = SORT_STRING)
+    {
+        return array_unique($array, $flag);
+    }
+
+    /**
      * @param ArrayAccess|array $array
      * @param string|int        $key
      *
