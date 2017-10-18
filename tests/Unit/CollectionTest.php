@@ -328,7 +328,7 @@ class CollectionTest extends TestCase
         $this->assertFalse($collection->has('four'));
     }
 
-    public function testEmpty()
+    public function testIsEmpty()
     {
         $items1 = [];
         $items2 = [1,2,3,4];
@@ -337,6 +337,16 @@ class CollectionTest extends TestCase
 
         $this->assertTrue($collection1->isEmpty());
         $this->assertFalse($collection2->isEmpty());
+    }
+
+    public function testImplode()
+    {
+        $items       = [1.5,2.5,3.5,4.5];
+        $collection = new Collection($items);
+
+        $this->assertEquals('1.5,2.5,3.5,4.5', $collection->implode(','));
+        $this->assertEquals('1,2,3,4', $collection->implode(',', 'floor'));
+        $this->assertEquals('2,3,4,5', $collection->implode(',', 'ceil'));
     }
 
     public function testToArray()

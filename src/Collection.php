@@ -338,6 +338,19 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
         return empty($this->items);
     }
 
+    /**
+     * Implode the collection values.
+     *
+     * @see implode()
+     * @param string        $glue
+     * @param callable|null $callback
+     * @return string
+     */
+    public function implode($glue = '', callable $callback = null)
+    {
+        return implode($glue, $callback ? array_map($callback, $this->items) : $this->items);
+    }
+
 
     /**
      * @InheritDoc
