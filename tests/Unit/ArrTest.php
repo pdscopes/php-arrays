@@ -209,7 +209,7 @@ class ArrTest extends TestCase
         $this->assertFalse(Arr::exists($array, 'four'));
     }
 
-    public function testFindKey()
+    public function testSearchKey()
     {
         $array = [
             'one' => 'value 1',
@@ -221,14 +221,14 @@ class ArrTest extends TestCase
             ]
         ];
 
-        $this->assertEquals('one', Arr::findKey($array, 'value 1'));
-        $this->assertEquals('two', Arr::findKey($array, 'value 2'));
-        $this->assertEquals('three', Arr::findKey($array, 'value 3'));
+        $this->assertEquals('one', Arr::searchKey($array, 'value 1'));
+        $this->assertEquals('two', Arr::searchKey($array, 'value 2'));
+        $this->assertEquals('three', Arr::searchKey($array, 'value 3'));
 
-        $this->assertFalse(Arr::findKey($array, 'four'));
+        $this->assertFalse(Arr::searchKey($array, 'four'));
     }
 
-    public function testFindKeyCallable()
+    public function testSearchKeyCallable()
     {
         $array = [
             'one' => 'value 1',
@@ -240,14 +240,14 @@ class ArrTest extends TestCase
             ]
         ];
 
-        $this->assertEquals('one', Arr::findKey($array, function ($item) { return $item === 'value 1';}));
-        $this->assertEquals('two', Arr::findKey($array, function ($item) { return $item === 'value 2';}));
-        $this->assertEquals('three', Arr::findKey($array, function ($item) { return $item === 'value 3';}));
+        $this->assertEquals('one', Arr::searchKey($array, function ($item) { return $item === 'value 1';}));
+        $this->assertEquals('two', Arr::searchKey($array, function ($item) { return $item === 'value 2';}));
+        $this->assertEquals('three', Arr::searchKey($array, function ($item) { return $item === 'value 3';}));
 
-        $this->assertFalse(Arr::findKey($array, function ($item) { return $item === 'blah';}));
+        $this->assertFalse(Arr::searchKey($array, function ($item) { return $item === 'blah';}));
     }
 
-    public function testFind()
+    public function testSearch()
     {
         $array = [
             'one' => 'value 1',
@@ -259,14 +259,14 @@ class ArrTest extends TestCase
             ]
         ];
 
-        $this->assertEquals('value 1', Arr::find($array, 'value 1'));
-        $this->assertEquals('value 2', Arr::find($array, 'value 2'));
-        $this->assertEquals('value 3', Arr::find($array, 'value 3'));
+        $this->assertEquals('value 1', Arr::search($array, 'value 1'));
+        $this->assertEquals('value 2', Arr::search($array, 'value 2'));
+        $this->assertEquals('value 3', Arr::search($array, 'value 3'));
 
-        $this->assertNull(Arr::find($array, 'four'));
+        $this->assertNull(Arr::search($array, 'four'));
     }
 
-    public function testFindCallable()
+    public function testSearchCallable()
     {
         $array = [
             'one' => 'value 1',
@@ -278,11 +278,11 @@ class ArrTest extends TestCase
             ]
         ];
 
-        $this->assertEquals('value 1', Arr::find($array, function ($item, $key) { return $key === 'one'; }));
-        $this->assertEquals('value 2', Arr::find($array, function ($item, $key) { return $key === 'two'; }));
-        $this->assertEquals('value 3', Arr::find($array, function ($item, $key) { return $key === 'three'; }));
+        $this->assertEquals('value 1', Arr::search($array, function ($item, $key) { return $key === 'one'; }));
+        $this->assertEquals('value 2', Arr::search($array, function ($item, $key) { return $key === 'two'; }));
+        $this->assertEquals('value 3', Arr::search($array, function ($item, $key) { return $key === 'three'; }));
 
-        $this->assertNull(Arr::find($array, function ($item, $key) { return $key === 'four'; }));
+        $this->assertNull(Arr::search($array, function ($item, $key) { return $key === 'four'; }));
     }
 
     public function testLocate()

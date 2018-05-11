@@ -192,7 +192,7 @@ class CollectionTest extends TestCase
         ];
         $collection = new Collection($items);
 
-        $this->assertEquals(['id' => 2, 'value' => 'beta'], $collection->find(function ($item) {
+        $this->assertEquals(['id' => 2, 'value' => 'beta'], $collection->search(function ($item) {
             return $item['id'] == 2;
         }));
     }

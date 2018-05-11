@@ -127,7 +127,7 @@ class ArrDotsTest extends TestCase
         $this->assertEquals('Not There', ArrDots::get($array, 'foobar', 'Not There'));
     }
 
-    public function testSearch()
+    public function testCollate()
     {
         $data = [
             'field0' => 'field0-value',
@@ -146,30 +146,30 @@ class ArrDotsTest extends TestCase
             ],
         ];
 
-        $this->assertEquals([], ArrDots::search($data, 'field1'));
-        $this->assertEquals([], ArrDots::search($data, 'field0.*'));
-        $this->assertEquals([], ArrDots::search($data, 'array1.item1'));
+        $this->assertEquals([], ArrDots::collate($data, 'field1'));
+        $this->assertEquals([], ArrDots::collate($data, 'field0.*'));
+        $this->assertEquals([], ArrDots::collate($data, 'array1.item1'));
         $this->assertEquals([
             'field0' => 'field0-value'
-        ], ArrDots::search($data, 'field0'));
+        ], ArrDots::collate($data, 'field0'));
         $this->assertEquals([
             'array0' => [1, 2, 3, 4]
-        ], ArrDots::search($data, 'array0'));
+        ], ArrDots::collate($data, 'array0'));
         $this->assertEquals([
             'array0.0' => 1,
             'array0.1' => 2,
             'array0.2' => 3,
             'array0.3' => 4,
-        ], ArrDots::search($data, 'array0.*', '*'));
+        ], ArrDots::collate($data, 'array0.*', '*'));
         $this->assertEquals([
             'array2.0.sub-array0' => [1, 2, 3, 4],
             'array2.1.sub-array0' => [1, 2, 3, 4],
-        ], ArrDots::search($data, 'array2.*.sub-array0', '*'));
+        ], ArrDots::collate($data, 'array2.*.sub-array0', '*'));
         $this->assertEquals([
             'array3.0.sub-array1.0.item1' => 'item2-value',
             'array3.0.sub-array1.1.item1' => 'item3-value',
             'array3.1.sub-array1.0.item1' => 'item4-value',
-        ], ArrDots::search($data, 'array3.*.sub-array1.*.item1', '*'));
+        ], ArrDots::collate($data, 'array3.*.sub-array1.*.item1', '*'));
     }
 
     public function testHas()

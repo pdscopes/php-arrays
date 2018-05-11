@@ -200,7 +200,7 @@ class Arr
      * @param bool            $strict
      * @return false|int|string
      */
-    public static function findKey(array $haystack, $needle, $strict = false)
+    public static function searchKey(array $haystack, $needle, $strict = false)
     {
         if (is_callable($needle)) {
             foreach ($haystack as $key => $item) {
@@ -226,7 +226,7 @@ class Arr
      * @param bool            $strict
      * @return false|int|string
      */
-    public static function find(array $haystack, $needle, $strict = false)
+    public static function search(array $haystack, $needle, $strict = false)
     {
         if (is_callable($needle)) {
             foreach ($haystack as $key => $item) {

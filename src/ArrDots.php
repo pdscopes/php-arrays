@@ -146,7 +146,8 @@ class ArrDots
     }
 
     /**
-     * Get all items from a multi-dimensional associative array using "dots" notation.
+     * Get all items from a multi-dimensional associative array using "dots" notation and
+     * return a flattened "dots" notation array.
      *
      * @param ArrayAccess|array  $array
      * @param string             $key
@@ -154,7 +155,7 @@ class ArrDots
      *
      * @return array|mixed[]
      */
-    public static function search($array, $key, $wildcard = null)
+    public static function collate($array, $key, $wildcard = null)
     {
         // If no wildcard set or the wildcard is not in the key
         if (null === $wildcard || strpos($key, $wildcard) === false) {
@@ -174,7 +175,7 @@ class ArrDots
                 $values = [];
                 foreach (array_keys($array) as $attr) {
                     $subKey = implode('.', array_merge([$attr], $segments));
-                    foreach (static::search($array, $subKey, $wildcard) as $attrKey => $value) {
+                    foreach (static::collate($array, $subKey, $wildcard) as $attrKey => $value) {
                         $values[$pattern . $attrKey] = $value;
                     }
                 }

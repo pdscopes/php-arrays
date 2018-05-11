@@ -193,9 +193,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @param bool           $strict
      * @return mixed|null
      */
-    public function find($needle, $strict = false)
+    public function search($needle, $strict = false)
     {
-        return Arr::find($this->items, $needle, $strict);
+        return Arr::search($this->items, $needle, $strict);
     }
 
     /**
