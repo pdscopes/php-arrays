@@ -265,4 +265,26 @@ class ArrDotsTest extends TestCase
 
         $this->assertEquals($partialArray, ArrDots::only($completeArray, ['two', 'deep.beta']));
     }
+
+    public function testLocate()
+    {
+        $shallow = [
+            ['locator' => '1a', 'description' => 'alpha'],
+            ['locator' => '2b', 'description' => 'beta'],
+            ['locator' => '3c', 'description' => 'gamma'],
+        ];
+        $deep = [
+            ['sub' => ['locator' => '1a', 'description' => 'alpha']],
+            ['sub' => ['locator' => '2b', 'description' => 'beta']],
+            ['sub' => ['locator' => '3c', 'description' => 'gamma']],
+        ];
+
+        $this->assertEquals('alpha', ArrDots::locate($shallow, 'locator', '1a')['description']);
+        $this->assertEquals('beta', ArrDots::locate($shallow, 'locator', '2b')['description']);
+        $this->assertEquals('gamma', ArrDots::locate($shallow, 'locator', '3c')['description']);
+
+        $this->assertEquals('alpha', ArrDots::locate($deep, 'sub.locator', '1a')['description']);
+        $this->assertEquals('beta', ArrDots::locate($deep, 'sub.locator', '2b')['description']);
+        $this->assertEquals('gamma', ArrDots::locate($deep, 'sub.locator', '3c')['description']);
+    }
 }

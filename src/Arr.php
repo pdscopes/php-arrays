@@ -242,4 +242,34 @@ class Arr
             return $key !== false ? $haystack[$key] : null;
         }
     }
+
+    /**
+     * Given a multi-dimensional array, return the first item that has a property $property
+     * with value $value.
+     * An array of properties can be provided to perform deeper finds.
+     *
+     * @param array        $array
+     * @param string|array $property
+     * @param mixed        $value
+     * @param bool         $strict
+     * @return mixed|null
+     */
+    public static function locate($array, $property, $value, $strict = false)
+    {
+        $array    = $array ?? [];
+        $columns  = (array) $property;
+        $property = array_pop($columns);
+        if (!empty($columns)) {
+            $array = static::column($array, $columns);
+        }
+        foreach ($array as $item) {
+            if (!isset($item[$property])) {
+                continue;
+            }
+            if ((!$strict && $item[$property] == $value) || ($strict && $item[$property] === $value)) {
+                return $item;
+            }
+        }
+        return null;
+    }
 }

@@ -282,6 +282,25 @@ class ArrTest extends TestCase
         $this->assertEquals('value 2', Arr::find($array, function ($item, $key) { return $key === 'two'; }));
         $this->assertEquals('value 3', Arr::find($array, function ($item, $key) { return $key === 'three'; }));
 
-        $this->assertNull(Arr::find($array, function ($item, $key) { return $key === 'four'; }));
+    public function testLocate()
+    {
+        $shallow = [
+            ['locator' => '1a', 'description' => 'alpha'],
+            ['locator' => '2b', 'description' => 'beta'],
+            ['locator' => '3c', 'description' => 'gamma'],
+        ];
+        $deep = [
+            ['sub' => ['locator' => '1a', 'description' => 'alpha']],
+            ['sub' => ['locator' => '2b', 'description' => 'beta']],
+            ['sub' => ['locator' => '3c', 'description' => 'gamma']],
+        ];
+
+        $this->assertEquals('alpha', Arr::locate($shallow, 'locator', '1a')['description']);
+        $this->assertEquals('beta', Arr::locate($shallow, 'locator', '2b')['description']);
+        $this->assertEquals('gamma', Arr::locate($shallow, 'locator', '3c')['description']);
+
+        $this->assertEquals('alpha', Arr::locate($deep, ['sub', 'locator'], '1a')['description']);
+        $this->assertEquals('beta', Arr::locate($deep, ['sub', 'locator'], '2b')['description']);
+        $this->assertEquals('gamma', Arr::locate($deep, ['sub', 'locator'], '3c')['description']);
     }
 }

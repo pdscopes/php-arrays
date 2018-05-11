@@ -308,4 +308,22 @@ class ArrDots
         $only     = Arr::only($imploded, $keys);
         return static::explode($only);
     }
+
+    /**
+     * Given a multi-dimensional array, return the first item that has a property $property
+     * with value $value.
+     * An array of properties can be provided to perform deeper finds.
+     *
+     * @param array  $array
+     * @param string $dots
+     * @param mixed  $value
+     * @param bool   $strict
+     * @return mixed|null
+     *
+     * @see \MadeSimple\Arrays\Arr::locate()
+     */
+    public static function locate($array, $dots, $value, $strict = false)
+    {
+        return Arr::locate($array, explode('.', $dots), $value, $strict);
+    }
 }
