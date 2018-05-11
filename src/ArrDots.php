@@ -25,9 +25,10 @@ class ArrDots
 
         foreach ($array as $key => $value) {
             if (is_array($value) && !empty($value)) {
-                $results = array_merge($results, static::implode($value, $prepend.$key.'.'));
-            } else {
-                $results[$prepend.$key] = $value;
+                $results = array_merge($results, static::implode($value, $prepend . $key . '.'));
+            }
+            else {
+                $results[$prepend . $key] = $value;
             }
         }
 
@@ -50,6 +51,22 @@ class ArrDots
         }
 
         return $results;
+    }
+
+    /**
+     * Get the values from a single column in $array.
+     * An array of columns can be provided to chain call column.
+     *
+     * @param array  $array
+     * @param string $dots
+     * @param string $indexKey Only applied to the last column
+     * @return array
+     * @see \MadeSimple\Arrays\Arr::column()
+     * @see \array_column()
+     */
+    public static function column($array, $dots, $indexKey = null)
+    {
+        return Arr::column($array, explode('.', $dots), $indexKey);
     }
 
     /**

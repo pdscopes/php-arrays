@@ -40,25 +40,31 @@ class Arr
     /**
      * Divide an array into two arrays. One with keys and the other with values.
      *
-     * @param array $array
+     * @param Arrayable|array $array
      *
      * @return array [array, array]
      */
     public static function divide($array)
     {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
         return [array_keys($array), array_values($array)];
     }
 
     /**
      * Flatten a multi-dimensional array into a single level.
      *
-     * @param array $array
-     * @param int $depth
+     * @param Arrayable|array $array
+     * @param int             $depth
      *
      * @return array
      */
     public static function flatten($array, $depth = INF)
     {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
         return array_reduce($array, function ($result, $item) use ($depth) {
             if (!is_array($item)) {
                 return array_merge($result, [$item]);
@@ -71,55 +77,102 @@ class Arr
     }
 
     /**
+     * Merge all elements of $array into a single array.
+     *
+     * @param ArrayAble|array $array
+     * @return array
+     */
+    public static function collapse($array)
+    {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
+        return array_merge(...$array);
+    }
+
+    /**
      * Get a subset of the items from $array that only contains $keys.
      *
-     * @param array            $array
+     * @param Arrayable|array  $array
      * @param int|string|array $keys
      *
      * @return array
      */
     public static function only($array, $keys)
     {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
         return array_intersect_key($array, array_flip((array) $keys));
     }
 
     /**
      * Get a subset of the items from $array that contains all keys except $keys.
      *
-     * @param array            $array
+     * @param ArrayAble|array  $array
      * @param int|string|array $keys
      *
      * @return array
      */
     public static function except($array, $keys)
     {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
         return array_diff_key($array, array_flip((array) $keys));
     }
 
     /**
      * Get a subset of items from $array that pass $callback test.
      *
-     * @param ArrayAccess|array $array
-     * @param callable          $callback
+     * @param ArrayAble|array $array
+     * @param callable        $callback
      *
      * @return array
      */
     public static function filter($array, callable $callback)
     {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
         return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
      * Get a subset of unique items from $array.
      *
-     * @param ArrayAccess|array  $array
-     * @param int                $flag
+     * @param ArrayAble|array  $array
+     * @param int              $flag
      *
      * @return array
      */
     public static function unique($array, $flag = SORT_STRING)
     {
+        if ($array instanceof ArrayAble) {
+            $array = $array->toArray();
+        }
         return array_unique($array, $flag);
+    }
+
+    /**
+     * Get the values from a single column in $array.
+     * An array of columns can be provided to chain call column.
+     *
+     * @param array        $array
+     * @param string|array $columns
+     * @param string       $indexKey Only applied to the last column
+     * @return array
+     * @see \array_column()
+     */
+    public static function column($array, $columns, $indexKey = null)
+    {
+        $array   = $array ?? [];
+        $columns = (array) $columns;
+        $last    = array_pop($columns);
+        foreach ($columns as $column) {
+            $array = array_column($array, $column);
+        }
+        return array_column($array, $last, $indexKey);
     }
 
     /**

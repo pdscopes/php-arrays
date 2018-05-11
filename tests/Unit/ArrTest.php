@@ -59,6 +59,18 @@ class ArrTest extends TestCase
         $this->assertEquals($flattenedArray, Arr::flatten($multiDimensionalArray));
     }
 
+    public function testCollapse()
+    {
+        $original = [
+            ['alpha'],
+            ['beta'],
+            ['gamma'],
+        ];
+        $collapsed = ['alpha', 'beta', 'gamma'];
+
+        $this->assertEquals($collapsed, Arr::collapse($original));
+    }
+
     public function testOnly()
     {
         $completeArray = [
@@ -126,15 +138,55 @@ class ArrTest extends TestCase
         }));
     }
 
-    public function unique()
+    public function testUnique()
     {
         $completeArray = [3,3, 5,5,5,5, 7,7,7,7,7,7, 9,9,9,9,9,9,9,9];
-        $filteredArray = [3, 5, 7, 9];
+        $filteredArray = [0 => 3, 2 => 5, 6 => 7, 12 => 9];
 
         $this->assertEquals($filteredArray, Arr::unique($completeArray));
 
         $completeDots = new Dots($completeArray);
         $this->assertEquals($filteredArray, Arr::unique($completeDots));
+    }
+
+    public function testColumn()
+    {
+        $completeArray = [
+            [
+                'one' => '1st one',
+                'two' => ['alpha' => '1st two alpha', 'beta' => '1st two beta', 'id' => '1A'],
+                'three' => [['gamma' => '1st gamma', 'epsilon' => '1st epsilon']]
+            ],
+            [
+                'one' => '2nd one',
+                'two' => ['alpha' => '2nd two alpha', 'beta' => '2nd two beta', 'id' => '2B'],
+                'three' => [['gamma' => '2nd gamma', 'epsilon' => '2nd epsilon']]
+            ],
+            [
+                'one' => '3rd one',
+                'two' => ['alpha' => '3rd two alpha', 'beta' => '3rd two beta', 'id' => '3C'],
+                'three' => [['gamma' => '3rd gamma', 'epsilon' => '3rd epsilon']]
+            ],
+        ];
+        $partialArray1 = [
+            '1st one',
+            '2nd one',
+            '3rd one',
+        ];
+        $partialArray2 = [
+            '1A' => '1st two alpha',
+            '2B' => '2nd two alpha',
+            '3C' => '3rd two alpha',
+        ];
+        $partialArray3 = [
+            '1st epsilon',
+            '2nd epsilon',
+            '3rd epsilon',
+        ];
+
+        $this->assertEquals($partialArray1, Arr::column($completeArray, 'one'));
+        $this->assertEquals($partialArray2, Arr::column($completeArray, ['two', 'alpha'], 'id'));
+        $this->assertEquals($partialArray3, Arr::column($completeArray, ['three', 0, 'epsilon']));
     }
 
     public function testExists()
