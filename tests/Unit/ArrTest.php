@@ -282,6 +282,9 @@ class ArrTest extends TestCase
         $this->assertEquals('value 2', Arr::find($array, function ($item, $key) { return $key === 'two'; }));
         $this->assertEquals('value 3', Arr::find($array, function ($item, $key) { return $key === 'three'; }));
 
+        $this->assertNull(Arr::find($array, function ($item, $key) { return $key === 'four'; }));
+    }
+
     public function testLocate()
     {
         $shallow = [
