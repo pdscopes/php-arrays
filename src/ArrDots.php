@@ -70,6 +70,26 @@ class ArrDots
     }
 
     /**
+     * Pluck the values from a single column in `$array`.
+     * A `$wildcard` can be set to collapse the array at that point.
+     * An array of columns can be provided to chain call column.
+     *
+     * @param array  $array
+     * @param string $dots
+     * @param string $wildcard
+     * @return array
+     * @see \MadeSimple\Arrays\Arr::column()
+     * @see \array_column()
+     */
+    public static function pluck($array, $dots, $wildcard = null)
+    {
+        $dots = array_map(function ($i) use ($wildcard) {
+            return $i === $wildcard ? null : $i;
+        }, explode('.', $dots));
+        return Arr::pluck($array, $dots);
+    }
+
+    /**
      * @param ArrayAccess|array $array
      * @param array|string      $keys
      *

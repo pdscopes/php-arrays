@@ -164,15 +164,39 @@ class Arr
      * @return array
      * @see \array_column()
      */
-    public static function column($array, $columns, $indexKey = null)
+    public static function column(array $array = null, $columns, $indexKey = null)
     {
-        $array   = $array ?? [];
+        $array   = (array) $array;
         $columns = (array) $columns;
         $last    = array_pop($columns);
         foreach ($columns as $column) {
             $array = array_column($array, $column);
         }
         return array_column($array, $last, $indexKey);
+    }
+
+    /**
+     * Pluck the values from a single column in `$array`.
+     * If an element in `$columns` is `null` then collapse the `$array`
+     * An array of columns can be provided to chain call column.
+     *
+     * @param array        $array
+     * @param string|array $columns
+     * @return array
+     * @see \array_column()
+     */
+    public static function pluck(array $array = null, $columns)
+    {
+        $array   = (array) $array;
+        $columns = (array) $columns;
+        foreach ($columns as $column) {
+            if ($column !== null) {
+                $array = array_column($array, $column);
+            } else {
+                $array = array_merge(...$array);
+            }
+        }
+        return $array;
     }
 
     /**

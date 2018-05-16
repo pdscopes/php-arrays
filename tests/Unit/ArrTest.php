@@ -189,6 +189,58 @@ class ArrTest extends TestCase
         $this->assertEquals($partialArray3, Arr::column($completeArray, ['three', 0, 'epsilon']));
     }
 
+    public function testPluck()
+    {
+        $completeArray = [
+            [
+                'one' => '1st one',
+                'two' => ['alpha' => '1st two alpha', 'beta' => '1st two beta', 'id' => '1A'],
+                'three' => [['gamma' => '1st gamma', 'epsilon' => '1st epsilon']],
+                'four' => [['gamma' => '1st gamma 1st'], ['gamma' => '1st gamma 2nd']],
+            ],
+            [
+                'one' => '2nd one',
+                'two' => ['alpha' => '2nd two alpha', 'beta' => '2nd two beta', 'id' => '2B'],
+                'three' => [['gamma' => '2nd gamma', 'epsilon' => '2nd epsilon']],
+                'four' => [['gamma' => '2nd gamma 1st'], ['gamma' => '2nd gamma 2nd']],
+            ],
+            [
+                'one' => '3rd one',
+                'two' => ['alpha' => '3rd two alpha', 'beta' => '3rd two beta', 'id' => '3C'],
+                'three' => [['gamma' => '3rd gamma', 'epsilon' => '3rd epsilon']],
+                'four' => [['gamma' => '3rd gamma 1st'], ['gamma' => '3rd gamma 2nd']],
+            ],
+        ];
+        $partialArray1 = [
+            '1st one',
+            '2nd one',
+            '3rd one',
+        ];
+        $partialArray2 = [
+            '1st two alpha',
+            '2nd two alpha',
+            '3rd two alpha',
+        ];
+        $partialArray3 = [
+            '1st epsilon',
+            '2nd epsilon',
+            '3rd epsilon',
+        ];
+        $partialArray4 = [
+            '1st gamma 1st',
+            '1st gamma 2nd',
+            '2nd gamma 1st',
+            '2nd gamma 2nd',
+            '3rd gamma 1st',
+            '3rd gamma 2nd',
+        ];
+
+        $this->assertEquals($partialArray1, Arr::pluck($completeArray, 'one'));
+        $this->assertEquals($partialArray2, Arr::pluck($completeArray, ['two', 'alpha']));
+        $this->assertEquals($partialArray3, Arr::pluck($completeArray, ['three', 0, 'epsilon']));
+        $this->assertEquals($partialArray4, Arr::pluck($completeArray, ['four', null, 'gamma']));
+    }
+
     public function testExists()
     {
         $array = [
