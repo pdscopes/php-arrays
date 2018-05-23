@@ -25,6 +25,11 @@ class ArrTest extends TestCase
         $this->assertFalse(Arr::isAssoc(['one']), 'Array is associative');
     }
 
+    public function testDivideOnDots()
+    {
+        $this->assertEquals([[0,1,2,3], [1,2,3,4]], Arr::divide(new Dots([1,2,3,4])));
+    }
+
     public function testDivide()
     {
         $array = [
@@ -37,6 +42,16 @@ class ArrTest extends TestCase
         list($dividedKeys, $dividedValues) = Arr::divide($array);
         $this->assertEquals($keys, $dividedKeys);
         $this->assertEquals($values, $dividedValues);
+    }
+
+    public function testFlattenOnDots()
+    {
+        $this->assertEquals([1,2,3], Arr::flatten(new Dots([1,2,3])));
+    }
+
+    public function testFlattenOnItemArray()
+    {
+        $this->assertEquals([1,2,3,4], Arr::flatten([1,2,[3,4]], 1));
     }
 
     public function testFlatten()
@@ -59,6 +74,18 @@ class ArrTest extends TestCase
         $this->assertEquals($flattenedArray, Arr::flatten($multiDimensionalArray));
     }
 
+    public function testCollapseOnDots()
+    {
+        $original = [
+            ['alpha'],
+            ['beta'],
+            ['gamma'],
+        ];
+        $collapsed = ['alpha', 'beta', 'gamma'];
+
+        $this->assertEquals($collapsed, Arr::collapse(new Dots($original)));
+    }
+
     public function testCollapse()
     {
         $original = [
@@ -69,6 +96,29 @@ class ArrTest extends TestCase
         $collapsed = ['alpha', 'beta', 'gamma'];
 
         $this->assertEquals($collapsed, Arr::collapse($original));
+    }
+
+    public function testOnlyOnDots()
+    {
+        
+        $completeArray = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+        $partialArray = [
+            'two' => 'value 2',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals($partialArray, Arr::only(new Dots($completeArray), ['two', 'deep']));   
     }
 
     public function testOnly()
@@ -93,6 +143,29 @@ class ArrTest extends TestCase
         $this->assertEquals($partialArray, Arr::only($completeArray, ['two', 'deep']));
     }
 
+    public function testExceptOnDots()
+    {
+        $completeArray = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+        $partialArray = [
+            'two' => 'value 2',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals($partialArray, Arr::except(new Dots($completeArray), ['one', 'three']));
+
+    }
+
     public function testExcept()
     {
         $completeArray = [
@@ -113,6 +186,29 @@ class ArrTest extends TestCase
         ];
 
         $this->assertEquals($partialArray, Arr::except($completeArray, ['one', 'three']));
+    }
+
+    public function testFilterOnDots()
+    {
+        $completeArray = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+        $partialArray = [
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertEquals($partialArray, Arr::filter(new Dots($completeArray), function ($item, $key) {
+            return in_array($key, ['two', 'deep']) && is_array($item);
+        }));   
     }
 
     public function testFilter()
@@ -241,6 +337,26 @@ class ArrTest extends TestCase
         $this->assertEquals($partialArray4, Arr::pluck($completeArray, ['four', null, 'gamma']));
     }
 
+    public function testExistsOnDots()
+    {
+        $array = [
+            'one' => 'value 1',
+            'two' => 'value 2',
+            'three' => 'value 3',
+            'deep' => [
+                'alpha' => 'value a',
+                'beta' => 'value b',
+            ]
+        ];
+
+        $this->assertTrue(Arr::exists(new Dots($array), 'one'));
+        $this->assertTrue(Arr::exists(new Dots($array), 'two'));
+        $this->assertTrue(Arr::exists(new Dots($array), 'three'));
+        $this->assertTrue(Arr::exists(new Dots($array), 'deep'));
+
+        $this->assertFalse(Arr::exists(new Dots($array), 'four'));
+    }
+
     public function testExists()
     {
         $array = [
@@ -335,6 +451,22 @@ class ArrTest extends TestCase
         $this->assertEquals('value 3', Arr::search($array, function ($item, $key) { return $key === 'three'; }));
 
         $this->assertNull(Arr::search($array, function ($item, $key) { return $key === 'four'; }));
+    }
+
+    public function testLocateOnPropertyNotFound()
+    {
+        $shallow = [
+            ['locator' => '1a', 'description' => 'alpha'],
+            ['locator' => '2b', 'description' => 'beta'],
+            ['locator' => '3c', 'description' => 'gamma'],
+        ];
+        $deep = [
+            ['sub' => ['locator' => '1a', 'description' => 'alpha']],
+            ['sub' => ['locator' => '2b', 'description' => 'beta']],
+            ['sub' => ['locator' => '3c', 'description' => 'gamma']],
+        ];
+
+        $this->assertNull(Arr::locate($shallow, 'invalid_property', '1a')['description']);
     }
 
     public function testLocate()

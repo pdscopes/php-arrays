@@ -139,6 +139,30 @@ class ArrDotsTest extends TestCase
         $this->assertEquals($partialArray4, ArrDots::pluck($completeArray, 'four.*.gamma', '*'));
     }
 
+    public function testRemoveOnNotFoundKey()
+    {
+        $completeArray = [
+            'name' => 'Foo Bar',
+            'address' => [
+                'street'   => '123 Fake St',
+                'postCode' => 'AB12 3CD',
+            ],
+            'age' => 21
+        ];
+
+        $expectedArray = [
+            'address' => [
+                'street'   => '123 Fake St',
+                'postCode' => 'AB12 3CD',
+            ],
+            'age' => 21,
+            'name' => 'Foo Bar',
+        ];
+
+        ArrDots::remove($completeArray, ['name.address']);
+        $this->assertEquals($expectedArray, $completeArray);
+    }
+
     public function testRemove()
     {
         $completeArray = [
@@ -160,6 +184,34 @@ class ArrDotsTest extends TestCase
         $this->assertEquals($partialArray, $completeArray);
     }
 
+    public function testRemoveOnEmptyKeys()
+    {
+        $emptyArray = [];
+
+        $this->assertNull(ArrDots::remove($emptyArray, []));
+    }
+
+    public function testRemoveOnInvalidArray()
+    {
+        $invalidArray = 100;
+
+        $this->assertNull(ArrDots::remove($invalidArray, ['keys']));
+    }
+
+    public function testGetOnInvalidArray()
+    {
+        $invalidArray = 100;
+
+        $this->assertNull(ArrDots::get($invalidArray, ['keys']));
+    }
+
+    public function testGetOnNullKey()
+    {
+        $array = [];
+
+        $this->assertEquals($array, ArrDots::get($array, null));
+    }
+
     public function testGet()
     {
         $array = [
@@ -177,6 +229,23 @@ class ArrDotsTest extends TestCase
         $this->assertEquals(21, ArrDots::get($array, 'age'));
 
         $this->assertEquals('Not There', ArrDots::get($array, 'foobar', 'Not There'));
+    }
+
+    public function testCollateOnNotAccessibleArray()
+    {
+        $data = ['field0' => 'field0-value'];
+
+        $this->assertEquals([], ArrDots::collate($data, 'field0.*', '*'));
+    }
+ 
+    public function testCollateOnNonExistedSegment()
+    {
+        $data = [
+            'field0' => ['field0-value'],
+            'field1' => 'field1-value',
+        ];
+
+        $this->assertEquals([], ArrDots::collate($data, 'field0.*.@', '@'));
     }
 
     public function testCollate()
@@ -222,6 +291,33 @@ class ArrDotsTest extends TestCase
             'array3.0.sub-array1.1.item1' => 'item3-value',
             'array3.1.sub-array1.0.item1' => 'item4-value',
         ], ArrDots::collate($data, 'array3.*.sub-array1.*.item1', '*'));
+    }
+
+    public function testHasOnWildcardKey()
+    {
+        $array = [
+            'one' => 'one1',
+            'two' => 'two2',
+            '*' => [
+                'found',
+            ],
+        ];
+
+        $this->assertTrue(ArrDots::has($array, ['one.*'], '*'));
+    } 
+
+    public function testHasOnNullKey()
+    {
+        $array = ['one' => 1, 'two' => 2];
+
+        $this->assertFalse(ArrDots::has($array, null));
+    }
+
+    public function testHasOnEmptyArray()
+    {
+        $array = [];
+
+        $this->assertFalse(ArrDots::has($array, ['keys']));
     }
 
     public function testHas()
@@ -270,6 +366,13 @@ class ArrDotsTest extends TestCase
         $this->assertEquals('a', ArrDots::pull($originalArray, 'deep.alpha'));
         $this->assertEquals('g', ArrDots::pull($originalArray, 'deep.gamma', 'g'));
         $this->assertEquals($alteredArray, $originalArray);
+    }
+
+    public function testSetOnNullKey()
+    {
+        $array = ['one' => 1];
+
+        $this->assertEquals(2, ArrDots::set($array, null, 2));
     }
 
     public function testSet()
