@@ -3,10 +3,35 @@
 namespace MadeSimple\Arrays\Test\Unit;
 
 use MadeSimple\Arrays\Collection;
+use MadeSimple\Arrays\Dots;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
 {
+    public function testConstructorOnCollection()
+    {
+        $collection = new Collection(new Collection([1,2]));
+        $expectedArray = [1,2];
+
+        $this->assertEquals($expectedArray, $collection->toArray());
+    }
+
+    public function testConstructorOnTraversable()
+    {
+        $collection = new Collection(new \ArrayIterator([1, 2, 3]));
+        $expectedArray = [1,2,3];
+
+        $this->assertEquals($expectedArray, $collection->toArray());
+    }
+
+    public function testConstructorOnArrayable()
+    {
+        $collection = new Collection(new Dots(['one' => 1]));
+        $expectedArray = ['one' => 1];
+
+        $this->assertEquals($expectedArray, $collection->toArray());
+    }
+
     public function testAll()
     {
         $items = [1, 2, 3, 4];
@@ -41,6 +66,16 @@ class CollectionTest extends TestCase
         $this->assertEquals(4, $collection->nth(1));
         $this->assertEquals(6, $collection->nth(2));
         $this->assertEquals(8, $collection->nth(3));
+    }
+
+    public function testNthOnInvalidPosition()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Position');
+
+        $items = [2,4,6,8];
+        $collection = new Collection($items);
+        $collection->nth(-10);
     }
 
     public function testLast()
@@ -162,6 +197,15 @@ class CollectionTest extends TestCase
 
         $this->assertEquals($completeArray, $collection->all());
         $this->assertEquals($partialArray, $filtered->all());
+    }
+
+    public function testFilterOnNull()
+    {
+        $assocArray = ['one' => 1, 'two' => 2];
+        $collection = new Collection($assocArray);
+        $filtered = $collection->filter();
+
+        $this->assertEquals($assocArray, $collection->all());
     }
 
     public function testUnique()
@@ -363,6 +407,15 @@ class CollectionTest extends TestCase
         $collection = new Collection($items);
 
         $this->assertEquals($items, $collection->jsonSerialize());
+    }
+
+    public function testJsonSerializeOnCollection()
+    {
+        $items      = [new Collection([1,2]),new Dots(['one' => 1]),3,4];
+        $collection = new Collection($items);
+        $expectedArray = [[1,2],['one' => 1],3,4];
+
+        $this->assertEquals($expectedArray, $collection->jsonSerialize());
     }
 
     public function testToString()

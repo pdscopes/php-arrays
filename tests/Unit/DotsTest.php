@@ -33,6 +33,15 @@ class DotsTest extends TestCase
         $this->assertEquals('a', $dotArr['deep.alpha']);
     }
 
+    public function testSetReference()
+    {
+        $refArr = ['one' => 1];
+        $dotArr = new Dots(['one' => 1, 'deep' => ['alpha' => 'a']]);
+        $dotArr->setReference($refArr);
+
+        $this->assertEquals($refArr, $dotArr->toArray());
+    }
+
     public function testSet()
     {
         $dotArr = new Dots(['one' => 1, 'deep' => ['alpha' => 'a']]);
