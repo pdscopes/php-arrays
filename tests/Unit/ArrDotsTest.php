@@ -320,6 +320,23 @@ class ArrDotsTest extends TestCase
         $this->assertFalse(ArrDots::has($array, ['keys']));
     }
 
+    public function testHasOnMismatchKeyArrayToArrayString()
+    {
+        $array = ['one' => 'string'];
+        $this->assertFalse(ArrDots::has($array, 'one.*.one', '*'));
+
+        $array = ['foo' => ['field0' => 'value0']];
+        $this->assertFalse(ArrDots::has($array, 'foo.*.field1', '*'));
+    }
+
+    public function testHasOnMultipleKeys()
+    {
+        $array = ['foo' => [['field0' => 'value0', 'field1' => 'value0']]];
+
+        $this->assertTrue(ArrDots::has($array, ['foo.*.field0', 'foo.*.field1'], '*'));
+        $this->assertFalse(ArrDots::has($array, ['foo.*.field0', 'foo.*.field2'], '*'));
+    }
+
     public function testHas()
     {
         $array = [

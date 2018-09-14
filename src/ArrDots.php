@@ -225,41 +225,50 @@ class ArrDots
      */
     public static function has($array, $keys, $wildcard = null)
     {
-        if (null === $keys) {
+        // If the keys are null or the array is not accessible
+        if (null === $keys || empty($array) || !Arr::accessible($array)) {
             return false;
         }
 
-        $keys = (array) $keys;
+        // Check that every key exists in $array
+        $originalArray = $array;
+        foreach ((array) $keys as $key) {
+            $array = $originalArray;
 
-        if (!$array) {
-            return false;
-        }
-
-        foreach ($keys as $key) {
-            $subKeyArray = $array;
-
+            // If the array has the key carry on
             if (Arr::exists($array, $key)) {
                 continue;
             }
 
-            $keySegments = explode('.', $key);
-            foreach ($keySegments as $k => $segment) {
-                if (Arr::accessible($subKeyArray) && Arr::exists($subKeyArray, $segment)) {
-                    $subKeyArray = $subKeyArray[$segment];
-                } else if ($segment === $wildcard && !empty($subKeyArray)) {
-                    if ($k+1 === count($keySegments)) {
-                        return true;
+            // Break up the key into segments and drill into the array
+            $segments = explode('.', $key);
+            foreach ($segments as $k => $segment) {
+                // If the segment is a wildcard
+                if ($segment === $wildcard && !empty($array)) {
+                    // If this is the last segment then the array has the key
+                    if ($k + 1 === count($segments)) {
+                        break;
                     }
-                    $subSubKey = implode('.', array_slice($keySegments, $k+1));
-                    foreach ($subKeyArray as $subSubKeyArray) {
-                        if (static::has($subSubKeyArray, $subSubKey, $wildcard)) {
-                            return true;
+                    // If we are still considering an array, drill into every possibility
+                    if (Arr::accessible($array)) {
+                        // Check that at least one possibility contains the (sub)key
+                        $subKey = implode('.', array_slice($segments, $k + 1));
+                        $found  = array_reduce($array, function ($f, $item) use ($subKey, $wildcard) {
+                            return $f || static::has($item, $subKey, $wildcard);
+                        }, false);
+                        if (!$found) {
+                            return false;
+                        } else {
+                            break;
                         }
                     }
-
-                } else {
-                    return false;
                 }
+                // Otherwise continue to drill into $array
+                if (!empty($array) && Arr::accessible($array) && Arr::exists($array, $segment)) {
+                    $array = $array[$segment];
+                    continue;
+                }
+                return false;
             }
         }
 
