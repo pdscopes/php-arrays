@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.1"
     },
     "autoload": {
         "psr-4": {
@@ -18,11 +18,20 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.3"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload-dev": {
         "psr-4": {
             "MadeSimple\\Arrays\\Test\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "scripts-descriptions": {
+        "test": "Run unit and integration tests"
     }
 }

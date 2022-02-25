@@ -466,7 +466,7 @@ class ArrTest extends TestCase
             ['sub' => ['locator' => '3c', 'description' => 'gamma']],
         ];
 
-        $this->assertNull(Arr::locate($shallow, 'invalid_property', '1a')['description']);
+        $this->assertNull(Arr::locate($shallow, 'invalid_property', '1a'));
     }
 
     public function testLocate()
