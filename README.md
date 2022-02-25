@@ -1,5 +1,5 @@
 # madesimple/php-arrays
-[![Build Status](https://travis-ci.org/pdscopes/php-arrays.svg?branch=master)](https://travis-ci.org/pdscopes/php-arrays)
+[![PHPUnit](https://github.com/pdscopes/php-arrays/actions/workflows/phpunit.yml/badge.svg)](https://github.com/pdscopes/php-arrays/actions/workflows/phpunit.yml)
 
 Helper functions for manipulating arrays.
 
