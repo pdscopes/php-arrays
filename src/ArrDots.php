@@ -12,7 +12,7 @@ use ArrayAccess;
 class ArrDots
 {
     /**
-     * Implode a multi-dimensional associative array into a single level dots array.
+     * Implode a multidimensional associative array into a single level dots array.
      *
      * @param array $array
      * @param string $prepend
@@ -35,7 +35,7 @@ class ArrDots
     }
 
     /**
-     * Explode a single level dots array into a multi-dimensional associative array.
+     * Explode a single level dots array into a multidimensional associative array.
      *
      * @param array $array
      *
@@ -131,7 +131,7 @@ class ArrDots
     }
 
     /**
-     * Get an item from a multi-dimensional associative array using "dots" notation.
+     * Get an item from a multidimensional associative array using "dots" notation.
      *
      * @param ArrayAccess|array $array
      * @param string|int $key
@@ -165,7 +165,7 @@ class ArrDots
     }
 
     /**
-     * Get all items from a multi-dimensional associative array using "dots" notation and
+     * Get all items from a multidimensional associative array using "dots" notation and
      * return a flattened "dots" notation array.
      *
      * @param ArrayAccess|array $array
@@ -214,7 +214,7 @@ class ArrDots
     }
 
     /**
-     * Determine if an item or items exist in an multi-dimensional associative array using "dots" notation.
+     * Determine if an item or items exist in a multidimensional associative array using "dots" notation.
      *
      * @param ArrayAccess|array $array
      * @param string|string[] $keys
@@ -234,7 +234,7 @@ class ArrDots
         foreach ((array)$keys as $key) {
             $array = $originalArray;
 
-            // If the array has the key carry on
+            // If the array has the key, carry on
             if (Arr::exists($array, $key)) {
                 continue;
             }
@@ -244,7 +244,7 @@ class ArrDots
             foreach ($segments as $k => $segment) {
                 // If the segment is a wildcard
                 if ($segment === $wildcard && !empty($array)) {
-                    // If this is the last segment then the array has the key
+                    // If this is the last segment, then the array has the key
                     if ($k + 1 === count($segments)) {
                         break;
                     }
@@ -292,7 +292,7 @@ class ArrDots
     }
 
     /**
-     * Set an multi-dimensional associative array item to $value using "dots" notation.
+     * Set a multidimensional associative array item to $value using "dots" notation.
      *
      * @param array $array
      * @param ?string $key
@@ -324,7 +324,7 @@ class ArrDots
     }
 
     /**
-     * Get a subset of items from an multi-dimensional associative $array using "dots" notation for $keys.
+     * Get a subset of items from a multidimensional associative $array using "dots" notation for $keys.
      *
      * @param array $array
      * @param string|string[] $keys
@@ -339,7 +339,7 @@ class ArrDots
     }
 
     /**
-     * Given a multi-dimensional array, return the first item that has a property $property
+     * Given a multidimensional array, return the first item that has a property $property
      * with value $value.
      * An array of properties can be provided to perform deeper finds.
      *

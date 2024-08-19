@@ -12,7 +12,7 @@ use ArrayAccess;
 class Arr
 {
     /**
-     * Determines if $value is an accessible like an array.
+     * Determines if $value is an accessible-like an array.
      *
      * @param mixed $value
      *
@@ -53,7 +53,7 @@ class Arr
     }
 
     /**
-     * Flatten a multi-dimensional array into a single level.
+     * Flatten a multidimensional array into a single level.
      *
      * @param Arrayable|array $array
      * @param int $depth
@@ -266,7 +266,7 @@ class Arr
     }
 
     /**
-     * Given a multi-dimensional array, return the first item that has a property $property
+     * Given a multidimensional array, return the first item that has a property $property
      * with value $value.
      * An array of properties can be provided to perform deeper finds.
      *
