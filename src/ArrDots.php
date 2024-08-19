@@ -14,20 +14,19 @@ class ArrDots
     /**
      * Implode a multi-dimensional associative array into a single level dots array.
      *
-     * @param array  $array
+     * @param array $array
      * @param string $prepend
      *
      * @return array
      */
-    public static function implode($array, $prepend = '')
+    public static function implode(array $array, string $prepend = ''): array
     {
         $results = [];
 
         foreach ($array as $key => $value) {
             if (is_array($value) && !empty($value)) {
                 $results = array_merge($results, static::implode($value, $prepend . $key . '.'));
-            }
-            else {
+            } else {
                 $results[$prepend . $key] = $value;
             }
         }
@@ -42,7 +41,7 @@ class ArrDots
      *
      * @return array
      */
-    public static function explode($array)
+    public static function explode(array $array): array
     {
         $results = [];
 
@@ -57,14 +56,14 @@ class ArrDots
      * Get the values from a single column in $array.
      * An array of columns can be provided to chain call column.
      *
-     * @param array  $array
+     * @param array $array
      * @param string $dots
-     * @param string $indexKey Only applied to the last column
+     * @param ?string $indexKey Only applied to the last column
      * @return array
-     * @see \MadeSimple\Arrays\Arr::column()
+     * @see Arr::column()
      * @see \array_column()
      */
-    public static function column($array, $dots, $indexKey = null)
+    public static function column(array $array, string $dots, ?string $indexKey = null): array
     {
         return Arr::column($array, explode('.', $dots), $indexKey);
     }
@@ -74,14 +73,14 @@ class ArrDots
      * A `$wildcard` can be set to collapse the array at that point.
      * An array of columns can be provided to chain call column.
      *
-     * @param array  $array
+     * @param array $array
      * @param string $dots
-     * @param string $wildcard
+     * @param null|string $wildcard
      * @return array
-     * @see \MadeSimple\Arrays\Arr::column()
+     * @see Arr::column()
      * @see \array_column()
      */
-    public static function pluck($array, $dots, $wildcard = null)
+    public static function pluck(array $array, string $dots, string $wildcard = null): array
     {
         $dots = array_map(function ($i) use ($wildcard) {
             return $i === $wildcard ? null : $i;
@@ -91,14 +90,14 @@ class ArrDots
 
     /**
      * @param ArrayAccess|array $array
-     * @param array|string      $keys
+     * @param array|string $keys
      *
      * @return void
      */
     public static function remove(&$array, $keys)
     {
         $original = &$array;
-        $keys     = (array) $keys;
+        $keys = (array)$keys;
 
         if (!Arr::accessible($array)) {
             return;
@@ -135,8 +134,8 @@ class ArrDots
      * Get an item from a multi-dimensional associative array using "dots" notation.
      *
      * @param ArrayAccess|array $array
-     * @param string            $key
-     * @param mixed             $default
+     * @param string|int $key
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -169,20 +168,20 @@ class ArrDots
      * Get all items from a multi-dimensional associative array using "dots" notation and
      * return a flattened "dots" notation array.
      *
-     * @param ArrayAccess|array  $array
-     * @param string             $key
-     * @param null|string        $wildcard
+     * @param ArrayAccess|array $array
+     * @param string $key
+     * @param null|string $wildcard
      *
-     * @return array|mixed[]
+     * @return array
      */
-    public static function collate($array, $key, $wildcard = null)
+    public static function collate($array, string $key, string $wildcard = null): array
     {
-        // If no wildcard set or the wildcard is not in the key
+        // If the simple case where this is not a wildcard (either specified or in the key)
         if (null === $wildcard || strpos($key, $wildcard) === false) {
             return static::has($array, $key) ? [$key => static::get($array, $key)] : [];
         }
 
-        $pattern  = '';
+        $pattern = '';
         $segments = explode('.', $key);
         while (($segment = array_shift($segments)) !== null) {
             // If we have run out of arrays to look into, stop looking
@@ -218,12 +217,12 @@ class ArrDots
      * Determine if an item or items exist in an multi-dimensional associative array using "dots" notation.
      *
      * @param ArrayAccess|array $array
-     * @param string|string[]   $keys
-     * @param null|string       $wildcard
+     * @param string|string[] $keys
+     * @param null|string $wildcard
      *
      * @return bool
      */
-    public static function has($array, $keys, $wildcard = null)
+    public static function has($array, $keys, string $wildcard = null): bool
     {
         // If the keys are null or the array is not accessible
         if (null === $keys || empty($array) || !Arr::accessible($array)) {
@@ -232,7 +231,7 @@ class ArrDots
 
         // Check that every key exists in $array
         $originalArray = $array;
-        foreach ((array) $keys as $key) {
+        foreach ((array)$keys as $key) {
             $array = $originalArray;
 
             // If the array has the key carry on
@@ -253,7 +252,7 @@ class ArrDots
                     if (Arr::accessible($array)) {
                         // Check that at least one possibility contains the (sub)key
                         $subKey = implode('.', array_slice($segments, $k + 1));
-                        $found  = array_reduce($array, function ($f, $item) use ($subKey, $wildcard) {
+                        $found = array_reduce($array, function ($f, $item) use ($subKey, $wildcard) {
                             return $f || static::has($item, $subKey, $wildcard);
                         }, false);
                         if (!$found) {
@@ -279,12 +278,12 @@ class ArrDots
      * Get a value from the array and remove it.
      *
      * @param ArrayAccess|array $array
-     * @param string            $key
-     * @param mixed             $default
+     * @param string $key
+     * @param mixed $default
      *
      * @return mixed
      */
-    public static function pull(&$array, $key, $default = null)
+    public static function pull(&$array, string $key, $default = null)
     {
         $value = static::get($array, $key, $default);
         static::remove($array, $key);
@@ -295,13 +294,13 @@ class ArrDots
     /**
      * Set an multi-dimensional associative array item to $value using "dots" notation.
      *
-     * @param array  $array
-     * @param string $key
-     * @param mixed  $value
+     * @param array $array
+     * @param ?string $key
+     * @param mixed $value
      *
-     * @return array
+     * @return mixed
      */
-    public static function set(&$array, $key, $value)
+    public static function set(array &$array, ?string $key, $value)
     {
         if (null === $key) {
             return $array = $value;
@@ -327,15 +326,15 @@ class ArrDots
     /**
      * Get a subset of items from an multi-dimensional associative $array using "dots" notation for $keys.
      *
-     * @param array           $array
+     * @param array $array
      * @param string|string[] $keys
      *
      * @return array
      */
-    public static function only($array, $keys)
+    public static function only(array $array, $keys): array
     {
         $imploded = static::implode($array);
-        $only     = Arr::only($imploded, $keys);
+        $only = Arr::only($imploded, $keys);
         return static::explode($only);
     }
 
@@ -344,15 +343,15 @@ class ArrDots
      * with value $value.
      * An array of properties can be provided to perform deeper finds.
      *
-     * @param array  $array
+     * @param array $array
      * @param string $dots
-     * @param mixed  $value
-     * @param bool   $strict
+     * @param mixed $value
+     * @param bool $strict
      * @return mixed|null
      *
-     * @see \MadeSimple\Arrays\Arr::locate()
+     * @see Arr::locate()
      */
-    public static function locate($array, $dots, $value, $strict = false)
+    public static function locate(array $array, string $dots, $value, bool $strict = false)
     {
         return Arr::locate($array, explode('.', $dots), $value, $strict);
     }

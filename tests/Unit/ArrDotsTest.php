@@ -12,10 +12,10 @@ class ArrDotsTest extends TestCase
         $multiDimensionalArray = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
         $implodedArray = [
             'name' => 'Foo Bar',
@@ -38,10 +38,10 @@ class ArrDotsTest extends TestCase
         $multiDimensionalArray = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
 
         $this->assertEquals($multiDimensionalArray, ArrDots::explode($implodedArray));
@@ -53,17 +53,17 @@ class ArrDotsTest extends TestCase
             [
                 'one' => '1st one',
                 'two' => ['alpha' => '1st two alpha', 'beta' => '1st two beta', 'id' => '1A'],
-                'three' => [['gamma' => '1st gamma', 'epsilon' => '1st epsilon']]
+                'three' => [['gamma' => '1st gamma', 'epsilon' => '1st epsilon']],
             ],
             [
                 'one' => '2nd one',
                 'two' => ['alpha' => '2nd two alpha', 'beta' => '2nd two beta', 'id' => '2B'],
-                'three' => [['gamma' => '2nd gamma', 'epsilon' => '2nd epsilon']]
+                'three' => [['gamma' => '2nd gamma', 'epsilon' => '2nd epsilon']],
             ],
             [
                 'one' => '3rd one',
                 'two' => ['alpha' => '3rd two alpha', 'beta' => '3rd two beta', 'id' => '3C'],
-                'three' => [['gamma' => '3rd gamma', 'epsilon' => '3rd epsilon']]
+                'three' => [['gamma' => '3rd gamma', 'epsilon' => '3rd epsilon']],
             ],
         ];
         $partialArray1 = [
@@ -144,15 +144,15 @@ class ArrDotsTest extends TestCase
         $completeArray = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
 
         $expectedArray = [
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
             'age' => 21,
@@ -168,16 +168,16 @@ class ArrDotsTest extends TestCase
         $completeArray = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
         $partialArray = [
             'address' => [
-                'street' => '123 Fake St'
+                'street' => '123 Fake St',
             ],
-            'age' => 21
+            'age' => 21,
         ];
 
         ArrDots::remove($completeArray, ['name', 'address.postCode']);
@@ -188,14 +188,16 @@ class ArrDotsTest extends TestCase
     {
         $emptyArray = [];
 
-        $this->assertNull(ArrDots::remove($emptyArray, []));
+        ArrDots::remove($emptyArray, []);
+        $this->assertEquals([], $emptyArray);
     }
 
     public function testRemoveOnInvalidArray()
     {
         $invalidArray = 100;
 
-        $this->assertNull(ArrDots::remove($invalidArray, ['keys']));
+        ArrDots::remove($invalidArray, ['keys']);
+        $this->assertEquals(100, $invalidArray);
     }
 
     public function testGetOnInvalidArray()
@@ -217,10 +219,10 @@ class ArrDotsTest extends TestCase
         $array = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
 
         $this->assertEquals('Foo Bar', ArrDots::get($array, 'name'));
@@ -237,7 +239,7 @@ class ArrDotsTest extends TestCase
 
         $this->assertEquals([], ArrDots::collate($data, 'field0.*', '*'));
     }
- 
+
     public function testCollateOnNonExistedSegment()
     {
         $data = [
@@ -271,10 +273,10 @@ class ArrDotsTest extends TestCase
         $this->assertEquals([], ArrDots::collate($data, 'field0.*'));
         $this->assertEquals([], ArrDots::collate($data, 'array1.item1'));
         $this->assertEquals([
-            'field0' => 'field0-value'
+            'field0' => 'field0-value',
         ], ArrDots::collate($data, 'field0'));
         $this->assertEquals([
-            'array0' => [1, 2, 3, 4]
+            'array0' => [1, 2, 3, 4],
         ], ArrDots::collate($data, 'array0'));
         $this->assertEquals([
             'array0.0' => 1,
@@ -304,7 +306,7 @@ class ArrDotsTest extends TestCase
         ];
 
         $this->assertTrue(ArrDots::has($array, ['one.*'], '*'));
-    } 
+    }
 
     public function testHasOnNullKey()
     {
@@ -342,14 +344,14 @@ class ArrDotsTest extends TestCase
         $array = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
             'age' => 21,
             'deep' => [
                 ['magic' => 'foo bar'],
                 ['magic' => 'bar foo'],
-            ]
+            ],
         ];
 
         $this->assertTrue(ArrDots::has($array, 'name'));
@@ -369,14 +371,14 @@ class ArrDotsTest extends TestCase
             'two' => '2',
             'deep' => [
                 'alpha' => 'a',
-                'beta'  => 'b'
+                'beta' => 'b',
             ],
         ];
         $alteredArray = [
             'one' => '1',
             'two' => '2',
             'deep' => [
-                'beta'  => 'b'
+                'beta' => 'b',
             ],
         ];
 
@@ -398,7 +400,7 @@ class ArrDotsTest extends TestCase
             'one' => '1',
             'deep' => [
                 'alpha' => 'a',
-            ]
+            ],
         ];
         $setArray = [
             'one' => 'one',
@@ -406,7 +408,7 @@ class ArrDotsTest extends TestCase
             'deep' => [
                 'alpha' => 'alpha',
                 'beta' => 'b',
-            ]
+            ],
         ];
 
         ArrDots::set($originalArray, 'one', 'one');
@@ -426,13 +428,13 @@ class ArrDotsTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals($partialArray, ArrDots::only($completeArray, ['two', 'deep.beta']));

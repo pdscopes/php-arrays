@@ -27,7 +27,7 @@ class ArrTest extends TestCase
 
     public function testDivideOnDots()
     {
-        $this->assertEquals([[0,1,2,3], [1,2,3,4]], Arr::divide(new Dots([1,2,3,4])));
+        $this->assertEquals([[0, 1, 2, 3], [1, 2, 3, 4]], Arr::divide(new Dots([1, 2, 3, 4])));
     }
 
     public function testDivide()
@@ -36,22 +36,22 @@ class ArrTest extends TestCase
             'one' => 'value 1',
             'two' => 'value 2',
         ];
-        $keys   = ['one', 'two'];
+        $keys = ['one', 'two'];
         $values = ['value 1', 'value 2'];
 
-        list($dividedKeys, $dividedValues) = Arr::divide($array);
+        [$dividedKeys, $dividedValues] = Arr::divide($array);
         $this->assertEquals($keys, $dividedKeys);
         $this->assertEquals($values, $dividedValues);
     }
 
     public function testFlattenOnDots()
     {
-        $this->assertEquals([1,2,3], Arr::flatten(new Dots([1,2,3])));
+        $this->assertEquals([1, 2, 3], Arr::flatten(new Dots([1, 2, 3])));
     }
 
     public function testFlattenOnItemArray()
     {
-        $this->assertEquals([1,2,3,4], Arr::flatten([1,2,[3,4]], 1));
+        $this->assertEquals([1, 2, 3, 4], Arr::flatten([1, 2, [3, 4]], 1));
     }
 
     public function testFlatten()
@@ -59,10 +59,10 @@ class ArrTest extends TestCase
         $multiDimensionalArray = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
         $flattenedArray = [
             'Foo Bar',
@@ -100,7 +100,6 @@ class ArrTest extends TestCase
 
     public function testOnlyOnDots()
     {
-        
         $completeArray = [
             'one' => 'value 1',
             'two' => 'value 2',
@@ -108,17 +107,17 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
-        $this->assertEquals($partialArray, Arr::only(new Dots($completeArray), ['two', 'deep']));   
+        $this->assertEquals($partialArray, Arr::only(new Dots($completeArray), ['two', 'deep']));
     }
 
     public function testOnly()
@@ -130,14 +129,14 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals($partialArray, Arr::only($completeArray, ['two', 'deep']));
@@ -152,18 +151,17 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals($partialArray, Arr::except(new Dots($completeArray), ['one', 'three']));
-
     }
 
     public function testExcept()
@@ -175,14 +173,14 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals($partialArray, Arr::except($completeArray, ['one', 'three']));
@@ -197,18 +195,18 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals($partialArray, Arr::filter(new Dots($completeArray), function ($item, $key) {
             return in_array($key, ['two', 'deep']) && is_array($item);
-        }));   
+        }));
     }
 
     public function testFilter()
@@ -220,13 +218,13 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals($partialArray, Arr::filter($completeArray, function ($item, $key) {
@@ -236,7 +234,7 @@ class ArrTest extends TestCase
 
     public function testUnique()
     {
-        $completeArray = [3,3, 5,5,5,5, 7,7,7,7,7,7, 9,9,9,9,9,9,9,9];
+        $completeArray = [3, 3, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 9];
         $filteredArray = [0 => 3, 2 => 5, 6 => 7, 12 => 9];
 
         $this->assertEquals($filteredArray, Arr::unique($completeArray));
@@ -251,17 +249,17 @@ class ArrTest extends TestCase
             [
                 'one' => '1st one',
                 'two' => ['alpha' => '1st two alpha', 'beta' => '1st two beta', 'id' => '1A'],
-                'three' => [['gamma' => '1st gamma', 'epsilon' => '1st epsilon']]
+                'three' => [['gamma' => '1st gamma', 'epsilon' => '1st epsilon']],
             ],
             [
                 'one' => '2nd one',
                 'two' => ['alpha' => '2nd two alpha', 'beta' => '2nd two beta', 'id' => '2B'],
-                'three' => [['gamma' => '2nd gamma', 'epsilon' => '2nd epsilon']]
+                'three' => [['gamma' => '2nd gamma', 'epsilon' => '2nd epsilon']],
             ],
             [
                 'one' => '3rd one',
                 'two' => ['alpha' => '3rd two alpha', 'beta' => '3rd two beta', 'id' => '3C'],
-                'three' => [['gamma' => '3rd gamma', 'epsilon' => '3rd epsilon']]
+                'three' => [['gamma' => '3rd gamma', 'epsilon' => '3rd epsilon']],
             ],
         ];
         $partialArray1 = [
@@ -346,7 +344,7 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertTrue(Arr::exists(new Dots($array), 'one'));
@@ -366,7 +364,7 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertTrue(Arr::exists($array, 'one'));
@@ -386,7 +384,7 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals('one', Arr::searchKey($array, 'value 1'));
@@ -405,14 +403,22 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
-        $this->assertEquals('one', Arr::searchKey($array, function ($item) { return $item === 'value 1';}));
-        $this->assertEquals('two', Arr::searchKey($array, function ($item) { return $item === 'value 2';}));
-        $this->assertEquals('three', Arr::searchKey($array, function ($item) { return $item === 'value 3';}));
+        $this->assertEquals('one', Arr::searchKey($array, function ($item) {
+            return $item === 'value 1';
+        }));
+        $this->assertEquals('two', Arr::searchKey($array, function ($item) {
+            return $item === 'value 2';
+        }));
+        $this->assertEquals('three', Arr::searchKey($array, function ($item) {
+            return $item === 'value 3';
+        }));
 
-        $this->assertFalse(Arr::searchKey($array, function ($item) { return $item === 'blah';}));
+        $this->assertFalse(Arr::searchKey($array, function ($item) {
+            return $item === 'blah';
+        }));
     }
 
     public function testSearch()
@@ -424,7 +430,7 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $this->assertEquals('value 1', Arr::search($array, 'value 1'));
@@ -443,14 +449,22 @@ class ArrTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
-        $this->assertEquals('value 1', Arr::search($array, function ($item, $key) { return $key === 'one'; }));
-        $this->assertEquals('value 2', Arr::search($array, function ($item, $key) { return $key === 'two'; }));
-        $this->assertEquals('value 3', Arr::search($array, function ($item, $key) { return $key === 'three'; }));
+        $this->assertEquals('value 1', Arr::search($array, function ($item, $key) {
+            return $key === 'one';
+        }));
+        $this->assertEquals('value 2', Arr::search($array, function ($item, $key) {
+            return $key === 'two';
+        }));
+        $this->assertEquals('value 3', Arr::search($array, function ($item, $key) {
+            return $key === 'three';
+        }));
 
-        $this->assertNull(Arr::search($array, function ($item, $key) { return $key === 'four'; }));
+        $this->assertNull(Arr::search($array, function ($item, $key) {
+            return $key === 'four';
+        }));
     }
 
     public function testLocateOnPropertyNotFound()
@@ -459,11 +473,6 @@ class ArrTest extends TestCase
             ['locator' => '1a', 'description' => 'alpha'],
             ['locator' => '2b', 'description' => 'beta'],
             ['locator' => '3c', 'description' => 'gamma'],
-        ];
-        $deep = [
-            ['sub' => ['locator' => '1a', 'description' => 'alpha']],
-            ['sub' => ['locator' => '2b', 'description' => 'beta']],
-            ['sub' => ['locator' => '3c', 'description' => 'gamma']],
         ];
 
         $this->assertNull(Arr::locate($shallow, 'invalid_property', '1a'));

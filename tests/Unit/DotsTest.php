@@ -9,7 +9,7 @@ class DotsTest extends TestCase
 {
     public function testToArray()
     {
-        $array  = ['one' => 1, 'deep' => ['alpha' => 'a']];
+        $array = ['one' => 1, 'deep' => ['alpha' => 'a']];
         $dotArr = new Dots($array);
 
         $this->assertEquals($array, $dotArr->toArray());
@@ -54,7 +54,6 @@ class DotsTest extends TestCase
 
         $dotArr['deep.alpha'] = 'ALPHA';
         $this->assertEquals('ALPHA', $dotArr['deep.alpha']);
-
     }
 
     public function testUnset()

@@ -10,8 +10,8 @@ class CollectionTest extends TestCase
 {
     public function testConstructorOnCollection()
     {
-        $collection = new Collection(new Collection([1,2]));
-        $expectedArray = [1,2];
+        $collection = new Collection(new Collection([1, 2]));
+        $expectedArray = [1, 2];
 
         $this->assertEquals($expectedArray, $collection->toArray());
     }
@@ -19,7 +19,7 @@ class CollectionTest extends TestCase
     public function testConstructorOnTraversable()
     {
         $collection = new Collection(new \ArrayIterator([1, 2, 3]));
-        $expectedArray = [1,2,3];
+        $expectedArray = [1, 2, 3];
 
         $this->assertEquals($expectedArray, $collection->toArray());
     }
@@ -51,7 +51,7 @@ class CollectionTest extends TestCase
 
     public function testFirst()
     {
-        $items = [2,4,6,8];
+        $items = [2, 4, 6, 8];
         $collection = new Collection($items);
 
         $this->assertEquals(2, $collection->first());
@@ -59,7 +59,7 @@ class CollectionTest extends TestCase
 
     public function testNth()
     {
-        $items = [2,4,6,8];
+        $items = [2, 4, 6, 8];
         $collection = new Collection($items);
 
         $this->assertEquals(2, $collection->nth(0));
@@ -73,14 +73,14 @@ class CollectionTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid Position');
 
-        $items = [2,4,6,8];
+        $items = [2, 4, 6, 8];
         $collection = new Collection($items);
         $collection->nth(-10);
     }
 
     public function testLast()
     {
-        $items = [2,4,6,8];
+        $items = [2, 4, 6, 8];
         $collection = new Collection($items);
 
         $this->assertEquals(8, $collection->last());
@@ -93,7 +93,9 @@ class CollectionTest extends TestCase
 
         $sum = new \stdClass;
         $sum->value = 0;
-        $collection->each(function ($item) use ($sum) { $sum->value += $item; });
+        $collection->each(function ($item) use ($sum) {
+            $sum->value += $item;
+        });
         $this->assertEquals(array_sum($items), $sum->value);
     }
 
@@ -102,10 +104,10 @@ class CollectionTest extends TestCase
         $multiDimensionalArray = [
             'name' => 'Foo Bar',
             'address' => [
-                'street'   => '123 Fake St',
+                'street' => '123 Fake St',
                 'postCode' => 'AB12 3CD',
             ],
-            'age' => 21
+            'age' => 21,
         ];
         $flattenedArray = [
             'Foo Bar',
@@ -115,7 +117,7 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($multiDimensionalArray);
-        $flattened  = $collection->flatten();
+        $flattened = $collection->flatten();
 
         $this->assertEquals($multiDimensionalArray, $collection->all());
         $this->assertEquals($flattenedArray, $flattened->all());
@@ -130,18 +132,18 @@ class CollectionTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $collection = new Collection($completeArray);
-        $only       = $collection->only('two', 'deep');
+        $only = $collection->only('two', 'deep');
 
         $this->assertEquals($completeArray, $collection->all());
         $this->assertEquals($partialArray, $only->all());
@@ -156,18 +158,18 @@ class CollectionTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'two' => 'value 2',
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
 
         $collection = new Collection($completeArray);
-        $except     = $collection->except('one', 'three');
+        $except = $collection->except('one', 'three');
 
         $this->assertEquals($completeArray, $collection->all());
         $this->assertEquals($partialArray, $except->all());
@@ -182,16 +184,16 @@ class CollectionTest extends TestCase
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $partialArray = [
             'deep' => [
                 'alpha' => 'value a',
                 'beta' => 'value b',
-            ]
+            ],
         ];
         $collection = new Collection($completeArray);
-        $filtered   = $collection->filter(function ($item, $key) {
+        $filtered = $collection->filter(function ($item, $key) {
             return in_array($key, ['two', 'deep']) && is_array($item);
         });
 
@@ -201,11 +203,12 @@ class CollectionTest extends TestCase
 
     public function testFilterOnNull()
     {
-        $assocArray = ['one' => 1, 'two' => 2];
+        $assocArray = ['one' => 1, 'two' => 2, 'three' => false];
         $collection = new Collection($assocArray);
         $filtered = $collection->filter();
 
         $this->assertEquals($assocArray, $collection->all());
+        $this->assertArrayNotHasKey('three', $filtered);
     }
 
     public function testUnique()
@@ -214,14 +217,14 @@ class CollectionTest extends TestCase
             'one' => 'value a',
             'two' => 'value b',
             'three' => 'value a',
-            'four' => 'value b'
+            'four' => 'value b',
         ];
         $uniqueArray = [
             'one' => 'value a',
             'two' => 'value b',
         ];
         $collection = new Collection($completeArray);
-        $filtered   = $collection->unique();
+        $filtered = $collection->unique();
 
         $this->assertEquals($completeArray, $collection->all());
         $this->assertEquals($uniqueArray, $filtered->all());
@@ -243,11 +246,13 @@ class CollectionTest extends TestCase
 
     public function testMap()
     {
-        $items    = [1, 2, 3, 4];
+        $items = [1, 2, 3, 4];
         $expected = [2, 4, 6, 8];
 
         $collection = new Collection($items);
-        $doubled    = $collection->map(function ($item) { return $item + $item; });
+        $doubled = $collection->map(function ($item) {
+            return $item + $item;
+        });
 
         $this->assertEquals($items, $collection->all());
         $this->assertEquals($expected, $doubled->all());
@@ -255,11 +260,11 @@ class CollectionTest extends TestCase
 
     public function testMerge()
     {
-        $items1 = [1,2,3,4];
-        $items2 = [5,6,7,8];
+        $items1 = [1, 2, 3, 4];
+        $items2 = [5, 6, 7, 8];
 
         $collection = new Collection($items1);
-        $merged     = $collection->merge($items2);
+        $merged = $collection->merge($items2);
 
         $this->assertEquals($items1, $collection->all());
         $this->assertEquals(array_merge($items1, $items2), $merged->all());
@@ -267,11 +272,11 @@ class CollectionTest extends TestCase
 
     public function testCombine()
     {
-        $keyArray   = ['one', 'two', 'three'];
+        $keyArray = ['one', 'two', 'three'];
         $valueArray = ['alpha', 'beta', 'gamma'];
 
         $keyCollection = new Collection($keyArray);
-        $combined    = $keyCollection->combine($valueArray);
+        $combined = $keyCollection->combine($valueArray);
 
         $this->assertEquals($keyArray, $keyCollection->all());
         $this->assertEquals(array_combine($keyArray, $valueArray), $combined->all());
@@ -283,20 +288,19 @@ class CollectionTest extends TestCase
         $items2 = ['two' => 'foobar', 'three' => 'gamma'];
 
         $collection = new Collection($items1);
-        $unioned    = $collection->union($items2);
+        $unioned = $collection->union($items2);
 
         $this->assertEquals($items1, $collection->all());
         $this->assertEquals($items1 + $items2, $unioned->all());
-
     }
 
     public function testSort()
     {
-        $array       = [2,1,4,3];
-        $sortedArray = [1,2,3,4];
+        $array = [2, 1, 4, 3];
+        $sortedArray = [1, 2, 3, 4];
 
         $collection = new Collection($array);
-        $sorted     = $collection->sort();
+        $sorted = $collection->sort();
 
         $this->assertEquals($array, $collection->all());
         foreach ($sortedArray as $k => $v) {
@@ -306,12 +310,12 @@ class CollectionTest extends TestCase
 
     public function testSortWithCallable()
     {
-        $array       = [2,1,4,3];
-        $sortedArray = [4,3,2,1];
+        $array = [2, 1, 4, 3];
+        $sortedArray = [4, 3, 2, 1];
 
         $collection = new Collection($array);
-        $sorted     = $collection->sort(function ($a, $b) {
-            return $b > $a;
+        $sorted = $collection->sort(function ($a, $b) {
+            return $b <=> $a;
         });
 
         $this->assertEquals($array, $collection->all());
@@ -325,7 +329,7 @@ class CollectionTest extends TestCase
         $array = ['one' => 'alpha', 'two' => 'beta', 'three' => 'gamma'];
 
         $collection = new Collection($array);
-        $flipped    = $collection->flip();
+        $flipped = $collection->flip();
 
         $this->assertEquals(array_flip($array), $flipped->all());
     }
@@ -335,7 +339,7 @@ class CollectionTest extends TestCase
         $array = ['one' => 'alpha', 'two' => 'beta', 'three' => 'gamma'];
 
         $collection = new Collection($array);
-        $keys       = $collection->keys();
+        $keys = $collection->keys();
 
         $this->assertEquals(array_keys($array), $keys->all());
     }
@@ -345,7 +349,7 @@ class CollectionTest extends TestCase
         $array = ['one' => 'alpha', 'two' => 'beta', 'three' => 'gamma'];
 
         $collection = new Collection($array);
-        $values     = $collection->values();
+        $values = $collection->values();
 
         $this->assertEquals(array_values($array), $values->all());
     }
@@ -375,7 +379,7 @@ class CollectionTest extends TestCase
     public function testIsEmpty()
     {
         $items1 = [];
-        $items2 = [1,2,3,4];
+        $items2 = [1, 2, 3, 4];
         $collection1 = new Collection($items1);
         $collection2 = new Collection($items2);
 
@@ -385,7 +389,7 @@ class CollectionTest extends TestCase
 
     public function testImplode()
     {
-        $items       = [1.5,2.5,3.5,4.5];
+        $items = [1.5, 2.5, 3.5, 4.5];
         $collection = new Collection($items);
 
         $this->assertEquals('1.5,2.5,3.5,4.5', $collection->implode(','));
@@ -395,7 +399,7 @@ class CollectionTest extends TestCase
 
     public function testToArray()
     {
-        $items      = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         $this->assertEquals($items, $collection->toArray());
@@ -403,7 +407,7 @@ class CollectionTest extends TestCase
 
     public function testJsonSerialize()
     {
-        $items      = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         $this->assertEquals($items, $collection->jsonSerialize());
@@ -411,17 +415,17 @@ class CollectionTest extends TestCase
 
     public function testJsonSerializeOnCollection()
     {
-        $items      = [new Collection([1,2]),new Dots(['one' => 1]),3,4];
+        $items = [new Collection([1, 2]), new Dots(['one' => 1]), 3, 4];
         $collection = new Collection($items);
-        $expectedArray = [[1,2],['one' => 1],3,4];
+        $expectedArray = [[1, 2], ['one' => 1], 3, 4];
 
         $this->assertEquals($expectedArray, $collection->jsonSerialize());
     }
 
     public function testToString()
     {
-        $json       = '[1,2,3,4]';
-        $items      = [1,2,3,4];
+        $json = '[1,2,3,4]';
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         $this->assertEquals($json, $collection->__toString());
@@ -429,7 +433,7 @@ class CollectionTest extends TestCase
 
     public function testArrayAccessOffsetExists()
     {
-        $items = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         foreach ($items as $k => $v) {
@@ -439,7 +443,7 @@ class CollectionTest extends TestCase
 
     public function testArrayAccessOffsetGet()
     {
-        $items = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         foreach ($items as $k => $v) {
@@ -449,21 +453,21 @@ class CollectionTest extends TestCase
 
     public function testArrayAccessOffsetSet()
     {
-        $items = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         foreach ($collection as $k => $v) {
-            $collection[$k] = 2*$v;
+            $collection[$k] = 2 * $v;
         }
 
         foreach ($items as $k => $v) {
-            $this->assertEquals(2*$v, $collection[$k]);
+            $this->assertEquals(2 * $v, $collection[$k]);
         }
     }
 
     public function testArrayAccessOffsetUnset()
     {
-        $items = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
 
         $this->assertTrue(isset($collection[1]));
@@ -474,8 +478,8 @@ class CollectionTest extends TestCase
 
     public function testCount()
     {
-        $items1 = [1,2,3,4];
-        $items2 = [1,2,3,4,5,6];
+        $items1 = [1, 2, 3, 4];
+        $items2 = [1, 2, 3, 4, 5, 6];
         $collection1 = new Collection($items1);
         $collection2 = new Collection($items2);
 
@@ -485,9 +489,9 @@ class CollectionTest extends TestCase
 
     public function testGetIterator()
     {
-        $items      = [1,2,3,4];
+        $items = [1, 2, 3, 4];
         $collection = new Collection($items);
-        $iterator   = $collection->getIterator();
+        $iterator = $collection->getIterator();
         $this->assertInstanceOf(\Iterator::class, $iterator);
         $this->assertEquals($items, iterator_to_array($iterator));
     }

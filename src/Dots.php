@@ -2,22 +2,21 @@
 
 namespace MadeSimple\Arrays;
 
+use ArrayAccess;
+
 /**
  * Class Dots
  *
  * @package MadeSimple\Arrays
  */
-class Dots implements \ArrayAccess, Arrayable
+class Dots implements ArrayAccess, Arrayable
 {
-    /**
-     * @var array
-     */
-    private $array;
+    private array $array;
 
     /**
      * DotArr constructor.
      *
-     * @param array  $array
+     * @param array $array
      */
     function __construct(array $array = [])
     {
@@ -27,7 +26,7 @@ class Dots implements \ArrayAccess, Arrayable
     /**
      * Store an array.
      *
-     * @param array  $array
+     * @param array $array
      */
     public function setArray(array $array)
     {
@@ -35,14 +34,12 @@ class Dots implements \ArrayAccess, Arrayable
             $this->array = $array;
         }
     }
-    
+
     /**
      * Get the instance as an array.
-     *
-     * @return array
      */
     #[\Override]
-    public function toArray()
+    public function toArray(): array
     {
         return $this->array;
     }
@@ -50,9 +47,9 @@ class Dots implements \ArrayAccess, Arrayable
     /**
      * Store an array as a reference.
      *
-     * @param array  $array
+     * @param array $array
      */
-    public function setReference(&$array)
+    public function setReference(array &$array)
     {
         if (Arr::isAssoc($array)) {
             $this->array = &$array;
