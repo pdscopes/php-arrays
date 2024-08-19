@@ -41,6 +41,7 @@ class Dots implements \ArrayAccess, Arrayable
      *
      * @return array
      */
+    #[\Override]
     public function toArray()
     {
         return $this->array;
@@ -59,21 +60,25 @@ class Dots implements \ArrayAccess, Arrayable
     }
 
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return ArrDots::has($this->array, $offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return ArrDots::get($this->array, $offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         ArrDots::set($this->array, $offset, $value);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         ArrDots::remove($this->array, $offset);

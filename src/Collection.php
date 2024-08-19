@@ -352,18 +352,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
 
-    /**
-     * @InheritDoc
-     */
-    public function toArray()
+    #[\Override]
+    public function toArray(): array
     {
         return array_map(function ($value) {
             return $value instanceof Arrayable ? $value->toArray() : $value;
         }, $this->items);
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return array_map(function ($value) {
@@ -376,51 +373,43 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
             }
         }, $this->items);
     }
-    /**
-     * @InheritDoc
-     */
+
     public function __toString()
     {
         return json_encode($this->toArray());
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->items);
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->items[$offset];
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->items[$offset] = $value;
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->items[$offset]);
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->items);
     }
-    /**
-     * @InheritDoc
-     */
+
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->items);
