@@ -58,25 +58,25 @@ class Dots implements ArrayAccess, Arrayable
 
 
     #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return ArrDots::has($this->array, $offset);
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return ArrDots::get($this->array, $offset);
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         ArrDots::set($this->array, $offset, $value);
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         ArrDots::remove($this->array, $offset);
     }
