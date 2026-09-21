@@ -229,7 +229,7 @@ class Arr
         if (is_callable($needle)) {
             foreach ($haystack as $key => $item) {
                 $result = $needle($item, $key);
-                if ((!$strict && $result == true) || ($strict && $result === true)) {
+                if ((!$strict && $result) || ($strict && $result === true)) {
                     return $key;
                 }
             }
@@ -254,7 +254,7 @@ class Arr
         if (is_callable($needle)) {
             foreach ($haystack as $key => $item) {
                 $result = $needle($item, $key);
-                if ((!$strict && $result == true) || ($strict && $result === true)) {
+                if ((!$strict && $result) || ($strict && $result === true)) {
                     return $item;
                 }
             }

@@ -177,7 +177,7 @@ class ArrDots
     public static function collate($array, string $key, ?string $wildcard = null): array
     {
         // If the simple case where this is not a wildcard (either specified or in the key)
-        if (null === $wildcard || strpos($key, $wildcard) === false) {
+        if (null === $wildcard || !str_contains($key, $wildcard)) {
             return static::has($array, $key) ? [$key => static::get($array, $key)] : [];
         }
 

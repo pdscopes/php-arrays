@@ -288,10 +288,10 @@ class CollectionTest extends TestCase
         $items2 = ['two' => 'foobar', 'three' => 'gamma'];
 
         $collection = new Collection($items1);
-        $unioned = $collection->union($items2);
+        $unified = $collection->union($items2);
 
         $this->assertEquals($items1, $collection->all());
-        $this->assertEquals($items1 + $items2, $unioned->all());
+        $this->assertEquals($items1 + $items2, $unified->all());
     }
 
     public function testSort()
