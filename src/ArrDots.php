@@ -80,7 +80,7 @@ class ArrDots
      * @see Arr::column()
      * @see \array_column()
      */
-    public static function pluck(array $array, string $dots, string $wildcard = null): array
+    public static function pluck(array $array, string $dots, ?string $wildcard = null): array
     {
         $dots = array_map(function ($i) use ($wildcard) {
             return $i === $wildcard ? null : $i;
@@ -94,7 +94,7 @@ class ArrDots
      *
      * @return void
      */
-    public static function remove(&$array, $keys)
+    public static function remove(&$array, $keys): void
     {
         $original = &$array;
         $keys = (array)$keys;
@@ -139,7 +139,7 @@ class ArrDots
      *
      * @return mixed
      */
-    public static function get($array, $key, $default = null)
+    public static function get($array, $key, mixed $default = null): mixed
     {
         if (!Arr::accessible($array)) {
             return $default;
@@ -174,7 +174,7 @@ class ArrDots
      *
      * @return array
      */
-    public static function collate($array, string $key, string $wildcard = null): array
+    public static function collate($array, string $key, ?string $wildcard = null): array
     {
         // If the simple case where this is not a wildcard (either specified or in the key)
         if (null === $wildcard || strpos($key, $wildcard) === false) {
@@ -222,7 +222,7 @@ class ArrDots
      *
      * @return bool
      */
-    public static function has($array, $keys, string $wildcard = null): bool
+    public static function has($array, $keys, ?string $wildcard = null): bool
     {
         // If the keys are null or the array is not accessible
         if (null === $keys || empty($array) || !Arr::accessible($array)) {
@@ -283,7 +283,7 @@ class ArrDots
      *
      * @return mixed
      */
-    public static function pull(&$array, string $key, $default = null)
+    public static function pull(&$array, string $key, mixed $default = null): mixed
     {
         $value = static::get($array, $key, $default);
         static::remove($array, $key);
@@ -300,7 +300,7 @@ class ArrDots
      *
      * @return mixed
      */
-    public static function set(array &$array, ?string $key, $value)
+    public static function set(array &$array, ?string $key, mixed $value): mixed
     {
         if (null === $key) {
             return $array = $value;
@@ -351,7 +351,7 @@ class ArrDots
      *
      * @see Arr::locate()
      */
-    public static function locate(array $array, string $dots, $value, bool $strict = false)
+    public static function locate(array $array, string $dots, mixed $value, bool $strict = false): mixed
     {
         return Arr::locate($array, explode('.', $dots), $value, $strict);
     }

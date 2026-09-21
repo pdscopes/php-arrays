@@ -71,7 +71,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * Get the first item in the collection.
      * @return mixed
      */
-    public function first()
+    public function first(): mixed
     {
         return reset($this->items);
     }
@@ -81,7 +81,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @param int $position
      * @return mixed
      */
-    public function nth(int $position)
+    public function nth(int $position): mixed
     {
         if ($position < 0) {
             $position = $this->count() + $position;
@@ -98,7 +98,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * Get the last item in the collection.
      * @return mixed
      */
-    public function last()
+    public function last(): mixed
     {
         return end($this->items);
     }
@@ -162,7 +162,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @param callable|null $callback
      * @return static
      */
-    public function filter(callable $callback = null): self
+    public function filter(?callable $callback = null): self
     {
         if ($callback) {
             return new static(Arr::filter($this->items, $callback));
@@ -253,7 +253,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      *
      * @return static
      */
-    public function sort(callable $callback = null): self
+    public function sort(?callable $callback = null): self
     {
         $items = $this->items;
         $callback
@@ -299,7 +299,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      *
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, mixed $default = null): mixed
     {
         if ($this->offsetExists($key)) {
             return $this->items[$key];
@@ -343,7 +343,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @return string
      * @see implode()
      */
-    public function implode($glue = '', callable $callback = null): string
+    public function implode($glue = '', ?callable $callback = null): string
     {
         return implode($glue, $callback ? array_map($callback, $this->items) : $this->items);
     }

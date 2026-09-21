@@ -18,7 +18,7 @@ class Arr
      *
      * @return bool
      */
-    public static function accessible($value): bool
+    public static function accessible(mixed $value): bool
     {
         return is_array($value) || $value instanceof ArrayAccess;
     }
@@ -276,7 +276,7 @@ class Arr
      * @param bool $strict
      * @return mixed|null
      */
-    public static function locate($array, $property, $value, bool $strict = false)
+    public static function locate($array, $property, $value, bool $strict = false): mixed
     {
         $array = $array ?? [];
         $columns = (array)$property;
