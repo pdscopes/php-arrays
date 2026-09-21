@@ -56,11 +56,11 @@ class Arr
      * Flatten a multidimensional array into a single level.
      *
      * @param Arrayable|array $array
-     * @param int $depth
+     * @param ?int $depth
      *
      * @return array
      */
-    public static function flatten($array, $depth = INF): array
+    public static function flatten($array, ?int $depth = null): array
     {
         if ($array instanceof ArrayAble) {
             $array = $array->toArray();
@@ -72,7 +72,7 @@ class Arr
             if ($depth === 1) {
                 return array_merge($result, array_values($item));
             }
-            return array_merge($result, static::flatten($item, $depth - 1));
+            return array_merge($result, static::flatten($item, $depth === null ? null : $depth - 1));
         }, []);
     }
 

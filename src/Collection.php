@@ -123,11 +123,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     /**
      * Get a flattened array of items in the collection.
      *
-     * @param int $depth
+     * @param ?int $depth
      *
      * @return static
      */
-    public function flatten($depth = INF): self
+    public function flatten(?int $depth = null): self
     {
         return new static(Arr::flatten($this->items, $depth));
     }
