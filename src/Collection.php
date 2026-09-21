@@ -183,7 +183,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 
     /**
      * Search the collection and return the first corresponding item if successful.
-     * If $needle is a callable then return the first item where the callable
+     * If $needle is a callable, then return the first item where the callable
      * returns true.
      *
      * @param mixed|callable $needle

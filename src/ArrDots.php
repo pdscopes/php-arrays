@@ -131,7 +131,7 @@ class ArrDots
     }
 
     /**
-     * Get an item from a multidimensional associative array using "dots" notation.
+     * Get an item from a multidimensional associative array using the "dots" notation.
      *
      * @param ArrayAccess|array $array
      * @param string|int $key
@@ -292,7 +292,7 @@ class ArrDots
     }
 
     /**
-     * Set a multidimensional associative array item to $value using "dots" notation.
+     * Set a multidimensional associative array item to $value using the "dots" notation.
      *
      * @param array $array
      * @param ?string $key

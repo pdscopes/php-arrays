@@ -36,8 +36,7 @@ $dots = new \MadeSimple\Dots([
 ]);
 ```
 
-Once a `Dots` is created you can replace the underlining array
-in the following ways:
+Once a `Dots` is created, you can replace the underlining array in the following ways:
 ```php
 // Set an array after dot array
 // Changes will _not_ be reflected in the original array

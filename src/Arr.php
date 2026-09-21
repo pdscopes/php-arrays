@@ -42,7 +42,7 @@ class Arr
      *
      * @param Arrayable|array $array
      *
-     * @return array [array, array]
+     * @return array{array<array-key>, array}
      */
     public static function divide($array): array
     {
@@ -123,7 +123,7 @@ class Arr
     }
 
     /**
-     * Get a subset of items from $array that pass $callback test.
+     * Get a subset of items from $array that pass the $callback test.
      *
      * @param ArrayAble|array $array
      * @param callable $callback
@@ -177,7 +177,7 @@ class Arr
 
     /**
      * Pluck the values from a single column in `$array`.
-     * If an element in `$columns` is `null` then collapse the `$array`
+     * If an element in `$columns` is `null`, then collapse the `$array`
      * An array of columns can be provided to chain call column.
      *
      * @param null|array $array
@@ -216,7 +216,7 @@ class Arr
 
     /**
      * Search the $haystack and return the first corresponding key if successful.
-     * If $needle is a callable then return the first key where the callable
+     * If $needle is a callable, then return the first key where the callable
      * returns true.
      *
      * @param array $haystack
@@ -241,7 +241,7 @@ class Arr
 
     /**
      * Search the $haystack and return the first corresponding element if successful.
-     * If $needle is a callable then return the first element where the callable
+     * If $needle is a callable, then return the first element where the callable
      * returns true.
      *
      * @param array $haystack
